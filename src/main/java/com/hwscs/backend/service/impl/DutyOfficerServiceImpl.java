@@ -13,7 +13,7 @@ import com.hwscs.backend.repository.DutyOfficerRepository;
 import com.hwscs.backend.repository.NurseRepository;
 import com.hwscs.backend.repository.NurseShiftRepository;
 import com.hwscs.backend.repository.ShiftRequestRepository;
-import com.hwscs.backend.service.DutyOfficerService;
+import com.hwscs.backend.service.interfaces.DutyOfficerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

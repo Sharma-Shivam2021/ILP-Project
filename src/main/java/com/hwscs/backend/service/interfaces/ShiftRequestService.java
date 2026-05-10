@@ -1,8 +1,10 @@
-package com.hwscs.backend.service;
+package com.hwscs.backend.service.interfaces;
 
 import com.hwscs.backend.dto.request.CreateShiftRequestDto;
 import com.hwscs.backend.dto.request.InchargeApprovalDto;
+import com.hwscs.backend.dto.response.EligiblePeerDto;
 import com.hwscs.backend.dto.response.PeerResponseDto;
+import com.hwscs.backend.dto.response.RequestHistoryResponseDto;
 import com.hwscs.backend.dto.response.ShiftRequestResponseDto;
 
 import java.util.List;
@@ -23,4 +25,19 @@ public interface ShiftRequestService {
 
     // View a single request by ID
     ShiftRequestResponseDto getRequestById(Integer requestId);
+
+    // List all eligible peer nurses for shift
+    List<EligiblePeerDto> getEligiblePeers(
+            Integer requesterShiftId,
+            String requesterUsername
+    );
+
+    // Cancel Request
+    ShiftRequestResponseDto cancelRequest(Integer requestId, String requestUsername);
+
+    // Get Request History
+    List<RequestHistoryResponseDto> getRequestHistory(
+            Integer requestId,
+            String username
+    );
 }

@@ -1,4 +1,4 @@
-package com.hwscs.backend.service;
+package com.hwscs.backend.service.interfaces;
 
 import com.hwscs.backend.dto.response.DepartmentStaffingDto;
 import com.hwscs.backend.dto.response.NurseResponseDto;

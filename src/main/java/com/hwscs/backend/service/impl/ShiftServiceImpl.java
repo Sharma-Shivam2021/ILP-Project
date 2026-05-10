@@ -12,7 +12,7 @@ import com.hwscs.backend.repository.DepartmentRepository;
 import com.hwscs.backend.repository.NurseRepository;
 import com.hwscs.backend.repository.NurseShiftRepository;
 import com.hwscs.backend.repository.ShiftRepository;
-import com.hwscs.backend.service.ShiftService;
+import com.hwscs.backend.service.interfaces.ShiftService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -2,7 +2,7 @@ package com.hwscs.backend.controller;
 
 import com.hwscs.backend.dto.response.NurseResponseDto;
 import com.hwscs.backend.dto.response.NurseShiftResponseDto;
-import com.hwscs.backend.service.NurseService;
+import com.hwscs.backend.service.interfaces.NurseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

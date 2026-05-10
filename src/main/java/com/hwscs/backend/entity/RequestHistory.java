@@ -1,6 +1,6 @@
 package com.hwscs.backend.entity;
 
-import com.hwscs.backend.entity.enums.RequestAction;
+import com.hwscs.backend.enums.RequestAction;
 import jakarta.persistence.*;
 import lombok.*;
 

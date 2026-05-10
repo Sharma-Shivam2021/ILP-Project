@@ -5,7 +5,7 @@ import com.hwscs.backend.dto.response.LoginResponseDto;
 import com.hwscs.backend.entity.User;
 import com.hwscs.backend.exception.ResourceNotFoundException;
 import com.hwscs.backend.repository.UserRepository;
-import com.hwscs.backend.service.AuthService;
+import com.hwscs.backend.service.interfaces.AuthService;
 import com.hwscs.backend.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

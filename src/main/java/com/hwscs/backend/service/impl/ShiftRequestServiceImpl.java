@@ -2,16 +2,18 @@ package com.hwscs.backend.service.impl;
 
 import com.hwscs.backend.dto.request.CreateShiftRequestDto;
 import com.hwscs.backend.dto.request.InchargeApprovalDto;
+import com.hwscs.backend.dto.response.EligiblePeerDto;
 import com.hwscs.backend.dto.response.PeerResponseDto;
+import com.hwscs.backend.dto.response.RequestHistoryResponseDto;
 import com.hwscs.backend.dto.response.ShiftRequestResponseDto;
 import com.hwscs.backend.entity.*;
-import com.hwscs.backend.entity.enums.RequestAction;
-import com.hwscs.backend.entity.enums.RequestStatus;
+import com.hwscs.backend.enums.RequestAction;
+import com.hwscs.backend.enums.RequestStatus;
 import com.hwscs.backend.exception.InvalidRequestException;
 import com.hwscs.backend.exception.ResourceNotFoundException;
 import com.hwscs.backend.exception.UnauthorizedActionException;
 import com.hwscs.backend.repository.*;
-import com.hwscs.backend.service.ShiftRequestService;
+import com.hwscs.backend.service.interfaces.ShiftRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +54,7 @@ public class ShiftRequestServiceImpl implements ShiftRequestService {
         NurseShift requesterShift = nurseShiftRepository.findById(dto.getRequesterShiftId())
                 .orElseThrow(() -> new ResourceNotFoundException("Requester shift not found"));
 
+
         NurseShift peerShift = nurseShiftRepository.findById(dto.getPeerShiftId())
                 .orElseThrow(() -> new ResourceNotFoundException("Peer shift not found"));
 
@@ -63,12 +66,39 @@ public class ShiftRequestServiceImpl implements ShiftRequestService {
             throw new InvalidRequestException("Only future shifts can be swapped");
         }
 
+        // Same-date validation
+        if (!requesterShift.getShiftDate()
+                .equals(peerShift.getShiftDate())) {
+
+            throw new InvalidRequestException(
+                    "Shift swaps must be for the same date"
+            );
+        }
+
         // Validation: shifts must actually belong to the respective nurses
         if (!requesterShift.getNurse().getId().equals(requester.getId())) {
             throw new UnauthorizedActionException("Shift does not belong to the requesting nurse");
         }
         if (!peerShift.getNurse().getId().equals(peer.getId())) {
             throw new InvalidRequestException("Peer shift does not belong to the peer nurse");
+        }
+
+        // Already swapped validation
+        if (Boolean.TRUE.equals(requesterShift.getIsSwapped())
+                || Boolean.TRUE.equals(peerShift.getIsSwapped())) {
+
+            throw new InvalidRequestException(
+                    "One of the shifts has already been swapped"
+            );
+        }
+
+        // Active request validation
+        if (shiftRequestRepository.existsActiveRequestForShift(requesterShift)
+                || shiftRequestRepository.existsActiveRequestForShift(peerShift)) {
+
+            throw new InvalidRequestException(
+                    "An active request already exists for one of the selected shifts"
+            );
         }
 
         ShiftRequest request = ShiftRequest.builder()
@@ -84,6 +114,50 @@ public class ShiftRequestServiceImpl implements ShiftRequestService {
         saveHistory(saved, requester.getUser(), RequestAction.CREATED, "Shift swap request created");
 
         return mapToDto(saved);
+    }
+
+    // ── Cancel Request ──────────────────────────────────────────────────────────
+
+    @Override
+    @Transactional
+    public ShiftRequestResponseDto cancelRequest(
+            Integer requestId,
+            String requesterUsername
+    ) {
+
+        ShiftRequest request = getRequestById_entity(requestId);
+
+        Nurse requester = getNurseByUsername(requesterUsername);
+
+        // Only requester can cancel
+        if (!request.getRequesterNurse().getId()
+                .equals(requester.getId())) {
+
+            throw new UnauthorizedActionException(
+                    "Only the requester can cancel this request"
+            );
+        }
+
+        // Can only cancel before peer responds
+        if (request.getStatus() != RequestStatus.PENDING_PEER) {
+
+            throw new InvalidRequestException(
+                    "Only pending peer requests can be cancelled"
+            );
+        }
+
+        request.setStatus(RequestStatus.CANCELLED);
+
+        saveHistory(
+                request,
+                requester.getUser(),
+                RequestAction.CANCELLED,
+                "Shift request cancelled by requester"
+        );
+
+        return mapToDto(
+                shiftRequestRepository.save(request)
+        );
     }
 
     // ── Peer Response ──────────────────────────────────────────────────────────
@@ -181,6 +255,111 @@ public class ShiftRequestServiceImpl implements ShiftRequestService {
     @Override
     public ShiftRequestResponseDto getRequestById(Integer requestId) {
         return mapToDto(getRequestById_entity(requestId));
+    }
+
+    @Override
+    public List<EligiblePeerDto> getEligiblePeers(Integer requesterShiftId, String requesterUsername) {
+        Nurse requester = getNurseByUsername(requesterUsername);
+
+        NurseShift requesterShift = nurseShiftRepository.findById(requesterShiftId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Requester shift not found"));
+
+        // Security check
+        if (!requesterShift.getNurse().getId().equals(requester.getId())) {
+            throw new UnauthorizedActionException(
+                    "This shift does not belong to the logged-in nurse"
+            );
+        }
+
+        List<NurseShift> eligibleShifts =
+                nurseShiftRepository.findEligiblePeers(
+                        requester.getDepartment().getId(),
+                        requesterShift.getShiftDate(),
+                        requester.getId(),
+                        requesterShift.getShift().getId()
+                );
+
+        return eligibleShifts.stream()
+                .map(ns -> EligiblePeerDto.builder()
+                        .nurseId(ns.getNurse().getId())
+                        .nurseName(ns.getNurse().getFullName())
+                        .nurseShiftId(ns.getId())
+                        .shiftName(ns.getShift().getShiftName())
+                        .shiftStart(ns.getShift().getStartTime())
+                        .shiftEnd(ns.getShift().getEndTime())
+                        .shiftDate(ns.getShiftDate())
+                        .build())
+                .toList();
+    }
+
+    @Override
+    public List<RequestHistoryResponseDto> getRequestHistory(
+            Integer requestId,
+            String username
+    ) {
+
+        ShiftRequest request = getRequestById_entity(requestId);
+
+        User currentUser = request.getRequesterNurse()
+                .getUser()
+                .getUsername()
+                .equals(username)
+                ? request.getRequesterNurse().getUser()
+                : null;
+
+        // If not requester, check peer
+        if (currentUser == null &&
+                request.getPeerNurse()
+                        .getUser()
+                        .getUsername()
+                        .equals(username)) {
+
+            currentUser = request.getPeerNurse().getUser();
+        }
+
+        // If still null, check incharge access
+        if (currentUser == null) {
+
+            NursingIncharge incharge =
+                    nursingInchargeRepository
+                            .findByUser_Username(username)
+                            .orElse(null);
+
+            if (incharge != null &&
+                    incharge.getDepartment().getId()
+                            .equals(
+                                    request.getRequesterNurse()
+                                            .getDepartment()
+                                            .getId()
+                            )) {
+
+                currentUser = incharge.getUser();
+            }
+        }
+
+        // Unauthorized
+        if (currentUser == null) {
+            throw new UnauthorizedActionException(
+                    "You are not authorized to view this request history"
+            );
+        }
+
+        return requestHistoryRepository.findByShiftRequest(request)
+                .stream()
+                .map(h -> RequestHistoryResponseDto.builder()
+                        .id(h.getId())
+                        .actorUsername(h.getActorUser().getUsername())
+                        .actorRole(
+                                h.getActorUser()
+                                        .getRole()
+                                        .name()
+                        )
+                        .action(h.getAction().name())
+                        .remarks(h.getRemarks())
+                        .actedAt(h.getActedAt())
+                        .build())
+                .toList();
     }
 
     // ── Private helpers ────────────────────────────────────────────────────────

@@ -2,8 +2,9 @@ package com.hwscs.backend.repository;
 
 import com.hwscs.backend.entity.Department;
 import com.hwscs.backend.entity.Nurse;
+import com.hwscs.backend.entity.NurseShift;
 import com.hwscs.backend.entity.ShiftRequest;
-import com.hwscs.backend.entity.enums.RequestStatus;
+import com.hwscs.backend.enums.RequestStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -36,4 +37,20 @@ public interface ShiftRequestRepository extends JpaRepository<ShiftRequest, Inte
             WHERE sr.requesterNurse.department = :department
             """)
     List<ShiftRequest> findByDepartment(@Param("department") Department department);
+
+    @Query("""
+                SELECT COUNT(sr) > 0
+                FROM ShiftRequest sr
+                WHERE (
+                    sr.requesterNurseShift = :shift
+                    OR sr.peerNurseShift = :shift
+                )
+                AND sr.status IN (
+                    com.hwscs.backend.enums.RequestStatus.PENDING_PEER,
+                    com.hwscs.backend.enums.RequestStatus.PEER_ACCEPTED
+                )
+            """)
+    boolean existsActiveRequestForShift(
+            @Param("shift") NurseShift shift
+    );
 }

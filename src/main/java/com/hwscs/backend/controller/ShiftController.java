@@ -2,7 +2,7 @@ package com.hwscs.backend.controller;
 
 import com.hwscs.backend.dto.request.AssignShiftDto;
 import com.hwscs.backend.dto.response.NurseShiftResponseDto;
-import com.hwscs.backend.service.ShiftService;
+import com.hwscs.backend.service.interfaces.ShiftService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;

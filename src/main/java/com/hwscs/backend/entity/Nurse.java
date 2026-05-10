@@ -1,6 +1,6 @@
 package com.hwscs.backend.entity;
 
-import com.hwscs.backend.entity.enums.NurseType;
+import com.hwscs.backend.enums.NurseType;
 import jakarta.persistence.*;
 import lombok.*;
 

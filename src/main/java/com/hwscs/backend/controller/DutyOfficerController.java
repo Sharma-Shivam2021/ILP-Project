@@ -3,7 +3,7 @@ package com.hwscs.backend.controller;
 import com.hwscs.backend.dto.response.DepartmentStaffingDto;
 import com.hwscs.backend.dto.response.NurseResponseDto;
 import com.hwscs.backend.dto.response.ShiftRequestResponseDto;
-import com.hwscs.backend.service.DutyOfficerService;
+import com.hwscs.backend.service.interfaces.DutyOfficerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;

@@ -1,8 +1,8 @@
 package com.hwscs.backend.config;
 
 import com.hwscs.backend.entity.*;
-import com.hwscs.backend.entity.enums.NurseType;
-import com.hwscs.backend.entity.enums.Role;
+import com.hwscs.backend.enums.NurseType;
+import com.hwscs.backend.enums.Role;
 import com.hwscs.backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;

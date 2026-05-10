@@ -9,7 +9,7 @@ import com.hwscs.backend.exception.ResourceNotFoundException;
 import com.hwscs.backend.repository.DepartmentRepository;
 import com.hwscs.backend.repository.NurseRepository;
 import com.hwscs.backend.repository.NurseShiftRepository;
-import com.hwscs.backend.service.NurseService;
+import com.hwscs.backend.service.interfaces.NurseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

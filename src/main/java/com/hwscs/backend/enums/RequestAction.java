@@ -1,4 +1,4 @@
-package com.hwscs.backend.entity.enums;
+package com.hwscs.backend.enums;
 
 public enum RequestAction {
 
@@ -6,6 +6,6 @@ public enum RequestAction {
     PEER_ACCEPTED,
     PEER_REJECTED,
     APPROVED,
-    REJECTED
-
+    REJECTED,
+    CANCELLED
 }

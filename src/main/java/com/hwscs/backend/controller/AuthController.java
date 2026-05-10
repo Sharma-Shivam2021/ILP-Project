@@ -2,7 +2,7 @@ package com.hwscs.backend.controller;
 
 import com.hwscs.backend.dto.request.LoginRequestDto;
 import com.hwscs.backend.dto.response.LoginResponseDto;
-import com.hwscs.backend.service.AuthService;
+import com.hwscs.backend.service.interfaces.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
 package com.hwscs.backend.entity;
 
-import com.hwscs.backend.entity.enums.Role;
+import com.hwscs.backend.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String username;
