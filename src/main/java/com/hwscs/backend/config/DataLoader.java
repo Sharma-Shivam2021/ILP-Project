@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -28,154 +30,171 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        if (departmentRepository.count() > 0) {
-            return;
+        if (departmentRepository.count() > 0) return;
+
+        // ─────────────────────────────────────────────
+        // 1. DEPARTMENTS (multiple for realism)
+        // ─────────────────────────────────────────────
+        Department icu = createDepartment("ICU", "Block A - Floor 2");
+        Department emergency = createDepartment("Emergency", "Block B - Ground Floor");
+        Department generalWard = createDepartment("General Ward", "Block C - Floor 1");
+
+        // ─────────────────────────────────────────────
+        // 2. SHIFTS
+        // ─────────────────────────────────────────────
+        Shift morning = createShift("Morning", 6, 0, 14, 0);
+        Shift evening = createShift("Evening", 14, 0, 22, 0);
+        Shift night = createShift("Night", 22, 0, 6, 0);
+
+        List<Shift> shifts = List.of(morning, evening, night);
+
+        // ─────────────────────────────────────────────
+        // 3. USERS + NURSES (BULK GENERATION)
+        // ─────────────────────────────────────────────
+        List<Nurse> allNurses = new ArrayList<>();
+
+        allNurses.addAll(generateNurses("ICU-N", icu, 5));
+        allNurses.addAll(generateNurses("ER-N", emergency, 5));
+        allNurses.addAll(generateNurses("GW-N", generalWard, 5));
+
+        // ─────────────────────────────────────────────
+        // 4. SHIFT ASSIGNMENTS (ROTATION LOGIC)
+        // ─────────────────────────────────────────────
+        LocalDate baseDate = LocalDate.now().plusDays(1);
+
+        List<NurseShift> assignments = new ArrayList<>();
+
+        for (int i = 0; i < allNurses.size(); i++) {
+            Nurse nurse = allNurses.get(i);
+
+            for (int d = 0; d < 3; d++) {
+                Shift shift = shifts.get((i + d) % shifts.size());
+
+                assignments.add(NurseShift.builder()
+                        .nurse(nurse)
+                        .shift(shift)
+                        .shiftDate(baseDate.plusDays(d))
+                        .build());
+            }
         }
 
-        // ── Department ──────────────────────────────────────────────────────────
-        Department icu = Department.builder()
-                .name("ICU")
-                .location("Block A, Floor 2")
+        nurseShiftRepository.saveAll(assignments);
+
+        // ─────────────────────────────────────────────
+        // 5. INCHARGE + DUTY OFFICER PER DEPT
+        // ─────────────────────────────────────────────
+        createIncharge("incharge.icu", icu, "Dr. Meera Joshi", "NI001");
+        createIncharge("incharge.er", emergency, "Dr. Rahul Mehta", "NI002");
+        createIncharge("incharge.gw", generalWard, "Dr. Kavita Shah", "NI003");
+
+        createDutyOfficer("officer.icu", icu, "DO001", "Suresh Patil");
+        createDutyOfficer("officer.er", emergency, "DO002", "Amit Deshmukh");
+
+        System.out.println("\n=== SAMPLE DATA LOADED ===");
+        System.out.println("Departments: ICU, Emergency, General Ward");
+        System.out.println("Users created per department with shift rotations");
+        System.out.println("Default password: password123\n");
+    }
+
+    // ─────────────────────────────────────────────
+    // HELPERS
+    // ─────────────────────────────────────────────
+
+    private Department createDepartment(String name, String location) {
+        Department dept = Department.builder()
+                .name(name)
+                .location(location)
                 .build();
-        departmentRepository.save(icu);
+        return departmentRepository.save(dept);
+    }
 
-        // ── Shifts (no type enum — name and times are free-form) ────────────────
-        Shift morningShift = Shift.builder()
-                .shiftName("Morning")
-                .startTime(LocalTime.of(6, 0))
-                .endTime(LocalTime.of(14, 0))
+    private Shift createShift(String name, int sh, int sm, int eh, int em) {
+        Shift shift = Shift.builder()
+                .shiftName(name)
+                .startTime(LocalTime.of(sh, sm))
+                .endTime(LocalTime.of(eh, em))
                 .build();
+        return shiftRepository.save(shift);
+    }
 
-        Shift eveningShift = Shift.builder()
-                .shiftName("Evening")
-                .startTime(LocalTime.of(14, 0))
-                .endTime(LocalTime.of(22, 0))
-                .build();
+    private List<Nurse> generateNurses(String prefix, Department dept, int count) {
 
-        Shift nightShift = Shift.builder()
-                .shiftName("Night")
-                .startTime(LocalTime.of(22, 0))
-                .endTime(LocalTime.of(6, 0))
-                .build();
+        List<Nurse> nurses = new ArrayList<>();
 
-        shiftRepository.save(morningShift);
-        shiftRepository.save(eveningShift);
-        shiftRepository.save(nightShift);
+        for (int i = 1; i <= count; i++) {
 
-        // ── Nurse Users ─────────────────────────────────────────────────────────
-        User nurseUser1 = User.builder()
-                .username("nurse1")
-                .password(passwordEncoder.encode("password123"))
-                .role(Role.NURSE)
-                .department(icu)
-                .build();
+            String username = prefix.toLowerCase() + i;
 
-        User nurseUser2 = User.builder()
-                .username("nurse2")
-                .password(passwordEncoder.encode("password123"))
-                .role(Role.NURSE)
-                .department(icu)
-                .build();
+            User user = userRepository.save(
+                    User.builder()
+                            .username(username)
+                            .password(passwordEncoder.encode("password123"))
+                            .role(Role.NURSE)
+                            .department(dept)
+                            .build()
+            );
 
-        userRepository.save(nurseUser1);
-        userRepository.save(nurseUser2);
+            Nurse nurse = nurseRepository.save(
+                    Nurse.builder()
+                            .user(user)
+                            .department(dept)
+                            .employeeCode(prefix + String.format("%03d", i))
+                            .fullName("Nurse " + username.toUpperCase())
+                            .nurseType(i % 2 == 0 ? NurseType.CONTRACTUAL : NurseType.PERMANENT)
+                            .contactPhone("98765" + (10000 + i))
+                            .contactEmail(username + "@hospital.com")
+                            .build()
+            );
 
-        // ── Nurse Profiles ──────────────────────────────────────────────────────
-        Nurse nurse1 = Nurse.builder()
-                .user(nurseUser1)
-                .department(icu)
-                .employeeCode("N001")
-                .fullName("Anita Sharma")
-                .nurseType(NurseType.PERMANENT)
-                .contactPhone("9876543210")
-                .contactEmail("anita.sharma@hospital.com")
-                .build();
+            nurses.add(nurse);
+        }
 
-        Nurse nurse2 = Nurse.builder()
-                .user(nurseUser2)
-                .department(icu)
-                .employeeCode("N002")
-                .fullName("Priya Singh")
-                .nurseType(NurseType.CONTRACTUAL)
-                .contactPhone("9876543211")
-                .contactEmail("priya.singh@hospital.com")
-                .build();
+        return nurses;
+    }
 
-        nurseRepository.save(nurse1);
-        nurseRepository.save(nurse2);
+    private void createIncharge(String username, Department dept, String name, String code) {
 
-        // ── Nurse Shift Assignments ─────────────────────────────────────────────
-        LocalDate tomorrow = LocalDate.now().plusDays(1);
-        LocalDate dayAfter = LocalDate.now().plusDays(2);
+        User user = userRepository.save(
+                User.builder()
+                        .username(username)
+                        .password(passwordEncoder.encode("password123"))
+                        .role(Role.NURSING_INCHARGE)
+                        .department(dept)
+                        .build()
+        );
 
-        NurseShift ns1 = NurseShift.builder()
-                .nurse(nurse1)
-                .shift(morningShift)
-                .shiftDate(tomorrow)
-                .build();
+        nursingInchargeRepository.save(
+                NursingIncharge.builder()
+                        .user(user)
+                        .department(dept)
+                        .employeeCode(code)
+                        .fullName(name)
+                        .contactPhone("9000000000")
+                        .contactEmail(username + "@hospital.com")
+                        .build()
+        );
+    }
 
-        NurseShift ns2 = NurseShift.builder()
-                .nurse(nurse2)
-                .shift(nightShift)
-                .shiftDate(tomorrow)
-                .build();
+    private void createDutyOfficer(String username, Department dept, String code, String name) {
 
-        NurseShift ns3 = NurseShift.builder()
-                .nurse(nurse1)
-                .shift(eveningShift)
-                .shiftDate(dayAfter)
-                .build();
+        User user = userRepository.save(
+                User.builder()
+                        .username(username)
+                        .password(passwordEncoder.encode("password123"))
+                        .role(Role.DUTY_OFFICER)
+                        .department(dept)
+                        .build()
+        );
 
-        NurseShift ns4 = NurseShift.builder()
-                .nurse(nurse2)
-                .shift(morningShift)
-                .shiftDate(dayAfter)
-                .build();
-
-        nurseShiftRepository.save(ns1);
-        nurseShiftRepository.save(ns2);
-        nurseShiftRepository.save(ns3);
-        nurseShiftRepository.save(ns4);
-
-        // ── Nursing Incharge ────────────────────────────────────────────────────
-        User inchargeUser = User.builder()
-                .username("incharge1")
-                .password(passwordEncoder.encode("password123"))
-                .role(Role.NURSING_INCHARGE)
-                .department(icu)
-                .build();
-        userRepository.save(inchargeUser);
-
-        NursingIncharge incharge = NursingIncharge.builder()
-                .user(inchargeUser)
-                .department(icu)
-                .employeeCode("NI001")
-                .fullName("Dr. Rekha Verma")
-                .contactPhone("9876543212")
-                .contactEmail("rekha.verma@hospital.com")
-                .build();
-        nursingInchargeRepository.save(incharge);
-
-        // ── Duty Officer ────────────────────────────────────────────────────────
-        User officerUser = User.builder()
-                .username("officer1")
-                .password(passwordEncoder.encode("password123"))
-                .role(Role.DUTY_OFFICER)
-                .department(icu)
-                .build();
-        userRepository.save(officerUser);
-
-        DutyOfficer officer = DutyOfficer.builder()
-                .user(officerUser)
-                .department(icu)
-                .employeeCode("DO001")
-                .fullName("Mr. Suresh Patil")
-                .contactPhone("9876543213")
-                .contactEmail("suresh.patil@hospital.com")
-                .build();
-        dutyOfficerRepository.save(officer);
-
-        System.out.println("=== Sample data loaded successfully ===");
-        System.out.println("Logins: nurse1, nurse2, incharge1, officer1 — password: password123");
+        dutyOfficerRepository.save(
+                DutyOfficer.builder()
+                        .user(user)
+                        .department(dept)
+                        .employeeCode(code)
+                        .fullName(name)
+                        .contactPhone("9111111111")
+                        .contactEmail(username + "@hospital.com")
+                        .build()
+        );
     }
 }

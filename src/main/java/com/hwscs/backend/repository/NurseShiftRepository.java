@@ -35,16 +35,18 @@ public interface NurseShiftRepository extends JpaRepository<NurseShift, Integer>
     @Query("""
                 SELECT ns
                 FROM NurseShift ns
-                WHERE ns.nurse.department.id = :departmentId
+                WHERE ns.nurse.department = :department
                 AND ns.shiftDate = :shiftDate
                 AND ns.nurse.id <> :requesterNurseId
                 AND ns.shift.id <> :requesterShiftTypeId
                 AND ns.isSwapped = false
             """)
     List<NurseShift> findEligiblePeers(
-            @Param("departmentId") Integer departmentId,
+            @Param("department") Department department,
             @Param("shiftDate") LocalDate shiftDate,
             @Param("requesterNurseId") Integer requesterNurseId,
             @Param("requesterShiftTypeId") Integer requesterShiftTypeId
     );
+
+    long countByShiftDate(LocalDate shiftDate);
 }

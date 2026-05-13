@@ -110,10 +110,7 @@ public class ShiftRequestController {
     ) {
 
         return ResponseEntity.ok(
-                shiftRequestService.getRequestHistory(
-                        id,
-                        userDetails.getUsername()
-                )
+                shiftRequestService.getRequestHistory(id, userDetails.getUsername())
         );
     }
 }

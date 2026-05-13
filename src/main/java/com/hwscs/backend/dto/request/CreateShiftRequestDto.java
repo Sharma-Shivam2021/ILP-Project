@@ -5,10 +5,7 @@ import lombok.Data;
 
 @Data
 public class CreateShiftRequestDto {
-
-    @NotNull(message = "Peer nurse ID is required")
-    private Integer peerNurseId;
-
+    
     @NotNull(message = "Requester shift ID is required")
     private Integer requesterShiftId;
 

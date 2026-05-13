@@ -53,4 +53,6 @@ public interface ShiftRequestRepository extends JpaRepository<ShiftRequest, Inte
     boolean existsActiveRequestForShift(
             @Param("shift") NurseShift shift
     );
+
+    long countByStatus(RequestStatus status);
 }
