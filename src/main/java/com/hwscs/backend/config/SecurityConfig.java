@@ -3,7 +3,6 @@ package com.hwscs.backend.config;
 import com.hwscs.backend.security.JwtAuthFilter;
 import com.hwscs.backend.security.JwtAuthenticationEntryPoint;
 import com.hwscs.backend.security.UserDetailsServiceImpl;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,12 +24,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAuthFilter jwtAuthFilter;
     private final UserDetailsServiceImpl userDetailsService;
+
+
+    public SecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtAuthFilter jwtAuthFilter,
+                          UserDetailsServiceImpl userDetailsService) {
+        super();
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.jwtAuthFilter = jwtAuthFilter;
+        this.userDetailsService = userDetailsService;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -73,6 +80,13 @@ public class SecurityConfig {
                         // Shift request listing — multiple roles can view
                         .requestMatchers("/api/shift-requests/**")
                         .hasAnyRole("NURSE", "NURSING_INCHARGE", "DUTY_OFFICER")
+                        // Profile
+                        .requestMatchers("/api/profile/**")
+                        .authenticated()
+
+                        .requestMatchers("/api/dashboard/nurse").hasRole("NURSE")
+                        .requestMatchers("/api/dashboard/incharge").hasRole("NURSING_INCHARGE")
+                        .requestMatchers("/api/dashboard/duty-officer").hasRole("DUTY_OFFICER")
 
                         .anyRequest().authenticated()
                 )

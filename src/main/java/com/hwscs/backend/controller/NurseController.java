@@ -3,7 +3,6 @@ package com.hwscs.backend.controller;
 import com.hwscs.backend.dto.response.NurseResponseDto;
 import com.hwscs.backend.dto.response.NurseShiftResponseDto;
 import com.hwscs.backend.service.interfaces.NurseService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,10 +15,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/nurses")
-@RequiredArgsConstructor
 public class NurseController {
 
     private final NurseService nurseService;
+
+    public NurseController(NurseService nurseService) {
+        super();
+        this.nurseService = nurseService;
+    }
 
     // NURSE: view own profile
     @GetMapping("/me")

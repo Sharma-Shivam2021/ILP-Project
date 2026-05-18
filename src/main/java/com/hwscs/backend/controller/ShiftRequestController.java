@@ -1,14 +1,13 @@
 package com.hwscs.backend.controller;
 
-import com.hwscs.backend.dto.request.CreateShiftRequestDto;
-import com.hwscs.backend.dto.request.InchargeApprovalDto;
+import com.hwscs.backend.dto.requests.CreateShiftRequestDto;
+import com.hwscs.backend.dto.requests.InchargeApprovalDto;
 import com.hwscs.backend.dto.response.EligiblePeerDto;
 import com.hwscs.backend.dto.response.PeerResponseDto;
 import com.hwscs.backend.dto.response.RequestHistoryResponseDto;
 import com.hwscs.backend.dto.response.ShiftRequestResponseDto;
 import com.hwscs.backend.service.interfaces.ShiftRequestService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,10 +17,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/shift-requests")
-@RequiredArgsConstructor
 public class ShiftRequestController {
 
     private final ShiftRequestService shiftRequestService;
+
+    public ShiftRequestController(ShiftRequestService shiftRequestService) {
+        super();
+        this.shiftRequestService = shiftRequestService;
+    }
 
     // NURSE: create a new shift swap request
     @PostMapping

@@ -14,7 +14,6 @@ import com.hwscs.backend.repository.NurseRepository;
 import com.hwscs.backend.repository.NurseShiftRepository;
 import com.hwscs.backend.repository.ShiftRequestRepository;
 import com.hwscs.backend.service.interfaces.DutyOfficerService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,7 +22,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class DutyOfficerServiceImpl implements DutyOfficerService {
 
     private final DutyOfficerRepository dutyOfficerRepository;
@@ -32,6 +30,19 @@ public class DutyOfficerServiceImpl implements DutyOfficerService {
     private final ShiftRequestRepository shiftRequestRepository;
     private final NurseServiceImpl nurseServiceImpl;
     private final ShiftRequestServiceImpl shiftRequestServiceImpl;
+
+
+    public DutyOfficerServiceImpl(DutyOfficerRepository dutyOfficerRepository, NurseRepository nurseRepository,
+                                  NurseShiftRepository nurseShiftRepository, ShiftRequestRepository shiftRequestRepository,
+                                  NurseServiceImpl nurseServiceImpl, ShiftRequestServiceImpl shiftRequestServiceImpl) {
+        super();
+        this.dutyOfficerRepository = dutyOfficerRepository;
+        this.nurseRepository = nurseRepository;
+        this.nurseShiftRepository = nurseShiftRepository;
+        this.shiftRequestRepository = shiftRequestRepository;
+        this.nurseServiceImpl = nurseServiceImpl;
+        this.shiftRequestServiceImpl = shiftRequestServiceImpl;
+    }
 
     @Override
     public DepartmentStaffingDto getDailyStaffingReport(String dutyOfficerUsername, LocalDate date) {
@@ -42,40 +53,28 @@ public class DutyOfficerServiceImpl implements DutyOfficerService {
         List<Nurse> allNurses = nurseRepository.findByDepartment(dept);
         List<NurseShift> assignments = nurseShiftRepository.findByDepartmentAndDate(dept, date);
 
-        Set<Integer> assignedNurseIds = assignments.stream()
-                .map(ns -> ns.getNurse().getId())
+        Set<Integer> assignedNurseIds = assignments.stream().map(ns -> ns.getNurse().getId())
                 .collect(Collectors.toSet());
 
-        List<NurseShiftResponseDto> assignmentDtos = assignments.stream()
-                .map(nurseServiceImpl::mapShiftToDto)
-                .toList();
+        List<NurseShiftResponseDto> assignmentDtos = assignments.stream().map(nurseServiceImpl::mapShiftToDto).toList();
 
-        return DepartmentStaffingDto.builder()
-                .departmentName(dept.getName())
-                .date(date)
-                .totalNurses(allNurses.size())
-                .assignedNurses(assignedNurseIds.size())
-                .unassignedNurses(allNurses.size() - assignedNurseIds.size())
-                .assignments(assignmentDtos)
-                .build();
+        return DepartmentStaffingDto.builder().departmentName(dept.getName()).date(date).totalNurse(allNurses.size())
+                .assignedNurses(assignedNurseIds.size()).unassignedNurses(allNurses.size() - assignedNurseIds.size())
+                .assignments(assignmentDtos).build();
     }
 
     @Override
     public List<NurseResponseDto> getDepartmentNurses(String dutyOfficerUsername) {
         DutyOfficer officer = getOfficerByUsername(dutyOfficerUsername);
-        return nurseRepository.findByDepartment(officer.getDepartment())
-                .stream()
-                .map(nurseServiceImpl::mapToDto)
+        return nurseRepository.findByDepartment(officer.getDepartment()).stream().map(nurseServiceImpl::mapToDto)
                 .toList();
     }
 
     @Override
     public List<ShiftRequestResponseDto> getDepartmentShiftRequests(String dutyOfficerUsername) {
         DutyOfficer officer = getOfficerByUsername(dutyOfficerUsername);
-        return shiftRequestRepository.findByDepartment(officer.getDepartment())
-                .stream()
-                .map(shiftRequestServiceImpl::mapToDto)
-                .toList();
+        return shiftRequestRepository.findByDepartment(officer.getDepartment()).stream()
+                .map(shiftRequestServiceImpl::mapToDto).toList();
     }
 
     private DutyOfficer getOfficerByUsername(String username) {

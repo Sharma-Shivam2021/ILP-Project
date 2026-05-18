@@ -4,7 +4,6 @@ import com.hwscs.backend.entity.*;
 import com.hwscs.backend.enums.NurseType;
 import com.hwscs.backend.enums.Role;
 import com.hwscs.backend.repository.*;
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner {
 
     private final DepartmentRepository departmentRepository;
@@ -26,11 +24,28 @@ public class DataLoader implements CommandLineRunner {
     private final NursingInchargeRepository nursingInchargeRepository;
     private final DutyOfficerRepository dutyOfficerRepository;
     private final PasswordEncoder passwordEncoder;
+    private final String password = "Password@12345";
+
+    public DataLoader(DepartmentRepository departmentRepository, UserRepository userRepository,
+                      NurseRepository nurseRepository, ShiftRepository shiftRepository, NurseShiftRepository nurseShiftRepository,
+                      NursingInchargeRepository nursingInchargeRepository, DutyOfficerRepository dutyOfficerRepository,
+                      PasswordEncoder passwordEncoder) {
+        super();
+        this.departmentRepository = departmentRepository;
+        this.userRepository = userRepository;
+        this.nurseRepository = nurseRepository;
+        this.shiftRepository = shiftRepository;
+        this.nurseShiftRepository = nurseShiftRepository;
+        this.nursingInchargeRepository = nursingInchargeRepository;
+        this.dutyOfficerRepository = dutyOfficerRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public void run(String... args) {
 
-        if (departmentRepository.count() > 0) return;
+        if (departmentRepository.count() > 0)
+            return;
 
         // ─────────────────────────────────────────────
         // 1. DEPARTMENTS (multiple for realism)
@@ -60,7 +75,7 @@ public class DataLoader implements CommandLineRunner {
         // ─────────────────────────────────────────────
         // 4. SHIFT ASSIGNMENTS (ROTATION LOGIC)
         // ─────────────────────────────────────────────
-        LocalDate baseDate = LocalDate.now().plusDays(1);
+        LocalDate baseDate = LocalDate.now().minusDays(1);
 
         List<NurseShift> assignments = new ArrayList<>();
 
@@ -70,11 +85,7 @@ public class DataLoader implements CommandLineRunner {
             for (int d = 0; d < 3; d++) {
                 Shift shift = shifts.get((i + d) % shifts.size());
 
-                assignments.add(NurseShift.builder()
-                        .nurse(nurse)
-                        .shift(shift)
-                        .shiftDate(baseDate.plusDays(d))
-                        .build());
+                assignments.add(NurseShift.builder().nurse(nurse).shift(shift).shiftDate(baseDate.plusDays(d)).build());
             }
         }
 
@@ -93,7 +104,7 @@ public class DataLoader implements CommandLineRunner {
         System.out.println("\n=== SAMPLE DATA LOADED ===");
         System.out.println("Departments: ICU, Emergency, General Ward");
         System.out.println("Users created per department with shift rotations");
-        System.out.println("Default password: password123\n");
+        System.out.println("Default password: " + password);
     }
 
     // ─────────────────────────────────────────────
@@ -101,18 +112,12 @@ public class DataLoader implements CommandLineRunner {
     // ─────────────────────────────────────────────
 
     private Department createDepartment(String name, String location) {
-        Department dept = Department.builder()
-                .name(name)
-                .location(location)
-                .build();
+        Department dept = Department.builder().name(name).location(location).build();
         return departmentRepository.save(dept);
     }
 
     private Shift createShift(String name, int sh, int sm, int eh, int em) {
-        Shift shift = Shift.builder()
-                .shiftName(name)
-                .startTime(LocalTime.of(sh, sm))
-                .endTime(LocalTime.of(eh, em))
+        Shift shift = Shift.builder().shiftName(name).startTime(LocalTime.of(sh, sm)).endTime(LocalTime.of(eh, em))
                 .build();
         return shiftRepository.save(shift);
     }
@@ -125,26 +130,13 @@ public class DataLoader implements CommandLineRunner {
 
             String username = prefix.toLowerCase() + i;
 
-            User user = userRepository.save(
-                    User.builder()
-                            .username(username)
-                            .password(passwordEncoder.encode("password123"))
-                            .role(Role.NURSE)
-                            .department(dept)
-                            .build()
-            );
+            User user = userRepository.save(User.builder().username(username)
+                    .password(passwordEncoder.encode(password)).firstLogin(true).role(Role.NURSE).department(dept).build());
 
-            Nurse nurse = nurseRepository.save(
-                    Nurse.builder()
-                            .user(user)
-                            .department(dept)
-                            .employeeCode(prefix + String.format("%03d", i))
-                            .fullName("Nurse " + username.toUpperCase())
-                            .nurseType(i % 2 == 0 ? NurseType.CONTRACTUAL : NurseType.PERMANENT)
-                            .contactPhone("98765" + (10000 + i))
-                            .contactEmail(username + "@hospital.com")
-                            .build()
-            );
+            Nurse nurse = nurseRepository.save(Nurse.builder().user(user).department(dept)
+                    .employeeCode(prefix + String.format("%03d", i)).fullName("Nurse " + username.toUpperCase())
+                    .nurseType(i % 2 == 0 ? NurseType.CONTRACTUAL : NurseType.PERMANENT)
+                    .contactPhone("98765" + (10000 + i)).contactEmail(username + "@hospital.com").build());
 
             nurses.add(nurse);
         }
@@ -154,47 +146,19 @@ public class DataLoader implements CommandLineRunner {
 
     private void createIncharge(String username, Department dept, String name, String code) {
 
-        User user = userRepository.save(
-                User.builder()
-                        .username(username)
-                        .password(passwordEncoder.encode("password123"))
-                        .role(Role.NURSING_INCHARGE)
-                        .department(dept)
-                        .build()
-        );
+        User user = userRepository.save(User.builder().username(username)
+                .password(passwordEncoder.encode(password)).firstLogin(true).role(Role.NURSING_INCHARGE).department(dept).build());
 
-        nursingInchargeRepository.save(
-                NursingIncharge.builder()
-                        .user(user)
-                        .department(dept)
-                        .employeeCode(code)
-                        .fullName(name)
-                        .contactPhone("9000000000")
-                        .contactEmail(username + "@hospital.com")
-                        .build()
-        );
+        nursingInchargeRepository.save(NursingIncharge.builder().user(user).department(dept).employeeCode(code)
+                .fullName(name).contactPhone("9000000000").contactEmail(username + "@hospital.com").build());
     }
 
     private void createDutyOfficer(String username, Department dept, String code, String name) {
 
-        User user = userRepository.save(
-                User.builder()
-                        .username(username)
-                        .password(passwordEncoder.encode("password123"))
-                        .role(Role.DUTY_OFFICER)
-                        .department(dept)
-                        .build()
-        );
+        User user = userRepository.save(User.builder().username(username)
+                .password(passwordEncoder.encode(password)).firstLogin(true).role(Role.DUTY_OFFICER).department(dept).build());
 
-        dutyOfficerRepository.save(
-                DutyOfficer.builder()
-                        .user(user)
-                        .department(dept)
-                        .employeeCode(code)
-                        .fullName(name)
-                        .contactPhone("9111111111")
-                        .contactEmail(username + "@hospital.com")
-                        .build()
-        );
+        dutyOfficerRepository.save(DutyOfficer.builder().user(user).department(dept).employeeCode(code).fullName(name)
+                .contactPhone("9111111111").contactEmail(username + "@hospital.com").build());
     }
 }

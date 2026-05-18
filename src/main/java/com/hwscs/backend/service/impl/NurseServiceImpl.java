@@ -10,18 +10,25 @@ import com.hwscs.backend.repository.DepartmentRepository;
 import com.hwscs.backend.repository.NurseRepository;
 import com.hwscs.backend.repository.NurseShiftRepository;
 import com.hwscs.backend.service.interfaces.NurseService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class NurseServiceImpl implements NurseService {
 
     private final NurseRepository nurseRepository;
     private final NurseShiftRepository nurseShiftRepository;
     private final DepartmentRepository departmentRepository;
+
+
+    public NurseServiceImpl(NurseRepository nurseRepository, NurseShiftRepository nurseShiftRepository,
+                            DepartmentRepository departmentRepository) {
+        super();
+        this.nurseRepository = nurseRepository;
+        this.nurseShiftRepository = nurseShiftRepository;
+        this.departmentRepository = departmentRepository;
+    }
 
     @Override
     public NurseResponseDto getMyProfile(String username) {
@@ -72,6 +79,19 @@ public class NurseServiceImpl implements NurseService {
                 .contactEmail(nurse.getContactEmail())
                 .departmentName(nurse.getDepartment().getName())
                 .username(nurse.getUser().getUsername())
+                .build();
+    }
+
+    public NurseShiftResponseDto mapToDto(NurseShift nurseShift) {
+        return NurseShiftResponseDto.builder()
+                .id(nurseShift.getId())
+                .nurseId(nurseShift.getNurse().getId())
+                .nurseFullName(nurseShift.getNurse().getFullName())
+                .shiftDate(nurseShift.getShiftDate())
+                .shiftName(nurseShift.getShift().getShiftName())
+                .startTime(nurseShift.getShift().getStartTime())
+                .endTime(nurseShift.getShift().getEndTime())
+                .isSwapped(nurseShift.getIsSwapped())
                 .build();
     }
 

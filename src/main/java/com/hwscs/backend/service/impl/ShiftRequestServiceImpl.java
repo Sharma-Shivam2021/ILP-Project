@@ -1,7 +1,7 @@
 package com.hwscs.backend.service.impl;
 
-import com.hwscs.backend.dto.request.CreateShiftRequestDto;
-import com.hwscs.backend.dto.request.InchargeApprovalDto;
+import com.hwscs.backend.dto.requests.CreateShiftRequestDto;
+import com.hwscs.backend.dto.requests.InchargeApprovalDto;
 import com.hwscs.backend.dto.response.EligiblePeerDto;
 import com.hwscs.backend.dto.response.PeerResponseDto;
 import com.hwscs.backend.dto.response.RequestHistoryResponseDto;
@@ -14,7 +14,6 @@ import com.hwscs.backend.exception.ResourceNotFoundException;
 import com.hwscs.backend.exception.UnauthorizedActionException;
 import com.hwscs.backend.repository.*;
 import com.hwscs.backend.service.interfaces.ShiftRequestService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +21,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class ShiftRequestServiceImpl implements ShiftRequestService {
 
     private final ShiftRequestRepository shiftRequestRepository;
@@ -31,6 +29,19 @@ public class ShiftRequestServiceImpl implements ShiftRequestService {
     private final DutyOfficerRepository dutyOfficerRepository;
     private final RequestHistoryRepository requestHistoryRepository;
     private final NursingInchargeRepository nursingInchargeRepository;
+
+
+    public ShiftRequestServiceImpl(ShiftRequestRepository shiftRequestRepository, NurseRepository nurseRepository,
+                                   NurseShiftRepository nurseShiftRepository, DutyOfficerRepository dutyOfficerRepository,
+                                   RequestHistoryRepository requestHistoryRepository, NursingInchargeRepository nursingInchargeRepository) {
+        super();
+        this.shiftRequestRepository = shiftRequestRepository;
+        this.nurseRepository = nurseRepository;
+        this.nurseShiftRepository = nurseShiftRepository;
+        this.dutyOfficerRepository = dutyOfficerRepository;
+        this.requestHistoryRepository = requestHistoryRepository;
+        this.nursingInchargeRepository = nursingInchargeRepository;
+    }
 
     // ── Create ─────────────────────────────────────────────────────────────────
 
