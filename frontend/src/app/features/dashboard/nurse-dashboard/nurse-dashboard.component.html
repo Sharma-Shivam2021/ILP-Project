@@ -1,0 +1,112 @@
+<div class="dashboard-container" *ngIf="dashboardData$ | async as data">
+  <div class="header-section">
+    <h1>Nurse Dashboard</h1>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-row">
+    <mat-card class="stat-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar color="primary">event_available</mat-icon>
+        <mat-card-title>Upcoming Shifts</mat-card-title>
+      </mat-card-header>
+      <mat-card-content><h2>{{ data.upcomingShiftCount }}</h2></mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar color="warn">pending</mat-icon>
+        <mat-card-title>Pending Requests</mat-card-title>
+      </mat-card-header>
+      <mat-card-content><h2>{{ data.pendingRequestCount }}</h2></mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar color="accent">check_circle</mat-icon>
+        <mat-card-title>Approved Swaps</mat-card-title>
+      </mat-card-header>
+      <mat-card-content><h2>{{ data.approvedSwapCount }}</h2></mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Upcoming Shifts Table -->
+  <mat-card class="dashboard-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar color="primary">schedule</mat-icon>
+      <mat-card-title>Upcoming Shifts</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="data.upcomingShifts" class="mat-elevation-z0" *ngIf="data.upcomingShifts.length > 0; else noShifts">
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <td mat-cell *matCellDef="let el"> {{ el.shiftDate }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="shift">
+          <th mat-header-cell *matHeaderCellDef> Shift </th>
+          <td mat-cell *matCellDef="let el"> {{ el.shiftName }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="time">
+          <th mat-header-cell *matHeaderCellDef> Time </th>
+          <td mat-cell *matCellDef="let el"> {{ el.startTime }} – {{ el.endTime }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="swapped">
+          <th mat-header-cell *matHeaderCellDef> Swapped? </th>
+          <td mat-cell *matCellDef="let el">
+            <span class="status-badge" [ngClass]="el.isSwapped ? 'SWAPPED' : 'NORMAL'">
+              {{ el.isSwapped ? 'Yes' : 'No' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="shiftColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: shiftColumns;"></tr>
+      </table>
+      <ng-template #noShifts>
+        <p class="empty-state">No upcoming shifts scheduled.</p>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Recent Requests Table -->
+  <mat-card class="dashboard-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar color="accent">history</mat-icon>
+      <mat-card-title>Recent Requests</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="data.recentRequests" class="mat-elevation-z0" *ngIf="data.recentRequests.length > 0; else noRequests">
+        <ng-container matColumnDef="requester">
+          <th mat-header-cell *matHeaderCellDef> Requester </th>
+          <td mat-cell *matCellDef="let el"> {{ el.requesterNurseName }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="shift">
+          <th mat-header-cell *matHeaderCellDef> Shift </th>
+          <td mat-cell *matCellDef="let el"> {{ el.requesterShiftName }} ({{ el.requesterShiftDate }}) </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Status </th>
+          <td mat-cell *matCellDef="let el">
+            <span class="status-badge" [ngClass]="el.status">{{ el.status }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef> Created </th>
+          <td mat-cell *matCellDef="let el"> {{ el.createdAt | date:'short' }} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="requestColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: requestColumns;"></tr>
+      </table>
+      <ng-template #noRequests>
+        <p class="empty-state">No recent requests.</p>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+</div>

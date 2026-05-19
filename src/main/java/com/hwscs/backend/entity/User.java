@@ -111,6 +111,7 @@ public class User {
         private LocalDateTime lockTime;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
+        @SuppressWarnings("unused")
         private Boolean firstLogin;
 
         public Builder id(Long id) {

@@ -1,0 +1,50 @@
+<div class="dashboard-container">
+  <div class="header-section">
+    <h1>Nurse Profile</h1>
+  </div>
+
+  <mat-card class="profile-card" *ngIf="profileData">
+    <mat-card-header class="profile-header">
+      <div mat-card-avatar class="avatar-circle">
+        <span>{{ profileData.fullName.charAt(0) | uppercase }}</span>
+      </div>
+      <mat-card-title>{{ profileData.fullName }}</mat-card-title>
+      <mat-card-subtitle>
+        {{ profileData.departmentName }} Department - {{ profileData.nurseType }} Nurse <br>
+        Employee ID: {{ profileData.employeeCode }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Full Name</mat-label>
+          <input matInput formControlName="fullName" placeholder="Enter full name">
+          <mat-error *ngIf="profileForm.get('fullName')?.hasError('required')">Full Name is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Phone</mat-label>
+          <input matInput formControlName="contactPhone" placeholder="Enter phone number">
+          <mat-error *ngIf="profileForm.get('contactPhone')?.hasError('required')">Phone is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="contactEmail" placeholder="Enter email">
+          <mat-error *ngIf="profileForm.get('contactEmail')?.hasError('required')">Email is required</mat-error>
+          <mat-error *ngIf="profileForm.get('contactEmail')?.hasError('email')">Invalid email format</mat-error>
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button mat-flat-button color="primary" type="submit" [disabled]="profileForm.invalid || loading || profileForm.pristine">
+            SAVE CHANGES
+          </button>
+        </div>
+        
+        <p class="read-only-note">Role, Department and Nurse Type are read-only.</p>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

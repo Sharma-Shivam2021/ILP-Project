@@ -1,0 +1,40 @@
+<div class="login-container">
+  <mat-card class="login-card glass-panel">
+    <mat-card-header>
+      <div mat-card-avatar class="header-image">
+        <mat-icon color="primary" style="font-size: 40px; width: 40px; height: 40px;">local_hospital</mat-icon>
+      </div>
+      <mat-card-title>HWSCS Portal</mat-card-title>
+      <mat-card-subtitle>Hospital Ward Shift Scheduling</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-error" *ngIf="error">{{ error }}</div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username" type="text" placeholder="nurse123">
+          <mat-icon matSuffix>person</mat-icon>
+          <mat-error *ngIf="loginForm.get('username')?.hasError('required')">Username is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput formControlName="password" type="password">
+          <mat-icon matSuffix>lock</mat-icon>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Password is required</mat-error>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('pattern')">
+            Must be at least 13 chars with uppercase, lowercase, number, & special char
+          </mat-error>
+        </mat-form-field>
+
+        <div class="actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading || loginForm.invalid" class="login-button">
+            {{ loading ? 'Logging in...' : 'Login' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

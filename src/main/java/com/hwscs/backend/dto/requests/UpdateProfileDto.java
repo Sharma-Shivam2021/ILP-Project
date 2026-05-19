@@ -10,8 +10,11 @@ public class UpdateProfileDto {
     @Email(message = "Invalid email format")
     private String contactEmail;
 
+    public UpdateProfileDto() {
+    }
+
     public UpdateProfileDto(String fullName, String contactPhone,
-                            @Email(message = "Invalid email format") String contactEmail) {
+            @Email(message = "Invalid email format") String contactEmail) {
         super();
         this.fullName = fullName;
         this.contactPhone = contactPhone;

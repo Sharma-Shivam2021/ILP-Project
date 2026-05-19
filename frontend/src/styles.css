@@ -1,0 +1,51 @@
+/* You can add global styles to this file, and also import other style files */
+
+:root {
+  /* Color Palette */
+  --primary: #3f51b5; /* Indigo */
+  --primary-light: #757de8;
+  --primary-dark: #002984;
+  --accent: #ff4081; /* Pink */
+  --accent-light: #ff79b0;
+  --accent-dark: #c60055;
+  --warn: #f44336;
+  
+  --bg-color: #f5f7fa;
+  --surface-color: #ffffff;
+  --text-primary: rgba(0, 0, 0, 0.87);
+  --text-secondary: rgba(0, 0, 0, 0.54);
+  --border-color: rgba(0, 0, 0, 0.12);
+
+  /* Typography */
+  --font-family: 'Inter', sans-serif;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+}
+
+/* Add custom styling for material inputs/buttons to feel modern */
+.mat-mdc-card {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+.mat-mdc-button-base {
+  border-radius: 8px !important;
+}
+
+/* Glassmorphism utility for login and cool panels */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.spacer {
+  flex: 1 1 auto;
+}

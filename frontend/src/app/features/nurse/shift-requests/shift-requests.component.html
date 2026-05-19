@@ -1,0 +1,173 @@
+<div class="dashboard-container">
+  <div class="header-section">
+    <h1>Shift Requests</h1>
+  </div>
+
+  <mat-card class="dashboard-card">
+    <mat-tab-group animationDuration="0ms">
+      
+      <!-- TAB 1: Request Shift Swap -->
+      <mat-tab label="Request Shift Swap">
+        <div class="tab-content" [formGroup]="swapForm">
+          
+          <!-- Select Shift -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Select Your Shift to Swap</mat-label>
+            <mat-select formControlName="selectedShiftId">
+              <mat-option *ngFor="let shift of myUpcomingShifts" [value]="shift.id">
+                {{ shift.shiftDate | date:'mediumDate' }} ({{ shift.shiftDate | date:'EEEE' }}) - {{ shift.shiftName }} Shift
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Search Peer -->
+          <mat-form-field appearance="outline" class="full-width" *ngIf="swapForm.get('selectedShiftId')?.value">
+            <mat-label>Search Peer (By Name)</mat-label>
+            <input matInput formControlName="searchQuery" placeholder="Search here...">
+            <mat-icon matPrefix>search</mat-icon>
+          </mat-form-field>
+
+          <!-- Available Peers List -->
+          <div class="peers-list" *ngIf="swapForm.get('selectedShiftId')?.value">
+            <h3>Available Peers</h3>
+            
+            <div class="peer-card" *ngFor="let peer of filteredPeers">
+              <div class="peer-avatar">
+                {{ peer.nurseName.charAt(0) | uppercase }}
+              </div>
+              <div class="peer-info">
+                <h4>{{ peer.nurseName }}</h4>
+                <p>Shift: {{ peer.shiftName }} ({{ peer.shiftStart }} - {{ peer.shiftEnd }})</p>
+                <p>Date: {{ peer.shiftDate | date:'mediumDate' }}</p>
+              </div>
+              <div class="peer-actions">
+                <span class="shift-badge" [ngClass]="peer.shiftName.toUpperCase()">{{ peer.shiftName }}</span>
+                <button mat-flat-button color="primary" (click)="sendRequest(peer)">Send Request</button>
+              </div>
+            </div>
+
+            <div class="empty-state" *ngIf="filteredPeers.length === 0">
+              <mat-icon>person_search</mat-icon>
+              <p>No eligible peers found for this shift.</p>
+            </div>
+          </div>
+          
+        </div>
+      </mat-tab>
+
+      <!-- TAB 2: Request Status Tracking (Sent) -->
+      <mat-tab label="Sent Requests">
+        <div class="tab-content">
+          <div class="request-tracking-list" *ngIf="sentRequests.length > 0; else noSentRequests">
+            
+            <div class="tracking-card" *ngFor="let req of sentRequests">
+              <div class="tracking-header">
+                <div class="peer-details">
+                  <div class="peer-avatar">{{ req.peerNurseName ? (req.peerNurseName.charAt(0) | uppercase) : '?' }}</div>
+                  <div>
+                    <h4>{{ req.peerNurseName || 'Unknown Peer' }}</h4>
+                    <p>Requested: {{ req.requesterShiftName }} ➔ {{ req.peerShiftName }}</p>
+                    <p class="date-text">{{ req.requesterShiftDate | date:'mediumDate' }}</p>
+                  </div>
+                </div>
+                <div class="status-badge" [ngClass]="req.status">
+                  {{ req.status.replace('_', ' ') }}
+                </div>
+              </div>
+
+              <!-- Timeline Stepper Visual -->
+              <div class="timeline">
+                <!-- Step 1: You -->
+                <div class="timeline-step completed">
+                  <div class="dot"></div>
+                  <div class="label">You</div>
+                </div>
+                <div class="line" [class.completed]="req.status !== 'CANCELLED' && req.status !== 'REJECTED'"></div>
+                
+                <!-- Step 2: Peer -->
+                <div class="timeline-step" 
+                     [class.completed]="req.status === 'PENDING_INCHARGE' || req.status === 'APPROVED'"
+                     [class.rejected]="req.status === 'REJECTED'">
+                  <div class="dot"></div>
+                  <div class="label">Peer</div>
+                </div>
+                <div class="line" [class.completed]="req.status === 'APPROVED'"></div>
+                
+                <!-- Step 3: In-charge -->
+                <div class="timeline-step" 
+                     [class.completed]="req.status === 'APPROVED'"
+                     [class.rejected]="req.status === 'REJECTED'">
+                  <div class="dot"></div>
+                  <div class="label">In-charge</div>
+                </div>
+              </div>
+              <p class="timeline-subtext">
+                <span *ngIf="req.status === 'PENDING_PEER'">Waiting for peer response...</span>
+                <span *ngIf="req.status === 'PENDING_INCHARGE'">Peer accepted, waiting for In-charge approval...</span>
+                <span *ngIf="req.status === 'APPROVED'">Swap approved!</span>
+                <span *ngIf="req.status === 'REJECTED'">Swap was rejected.</span>
+              </p>
+            </div>
+            
+          </div>
+
+          <ng-template #noSentRequests>
+            <div class="empty-state">
+              <mat-icon>history</mat-icon>
+              <p>You have no outgoing swap requests.</p>
+            </div>
+          </ng-template>
+        </div>
+      </mat-tab>
+
+      <!-- TAB 3: Incoming Swap Requests (Received) -->
+      <mat-tab label="Incoming Requests">
+        <div class="tab-content">
+          <div class="request-tracking-list" *ngIf="receivedRequests.length > 0; else noReceivedRequests">
+            
+            <div class="tracking-card" *ngFor="let req of receivedRequests">
+              <div class="tracking-header">
+                <div class="peer-details">
+                  <div class="peer-avatar">{{ req.requesterNurseName ? (req.requesterNurseName.charAt(0) | uppercase) : '?' }}</div>
+                  <div>
+                    <h4>From: {{ req.requesterNurseName }}</h4>
+                    <p>Wants to swap: {{ req.requesterShiftName }} with your {{ req.peerShiftName }}</p>
+                    <p class="date-text">{{ req.requesterShiftDate | date:'mediumDate' }}</p>
+                  </div>
+                </div>
+                <div class="status-badge" [ngClass]="req.status">
+                  {{ req.status.replace('_', ' ') }}
+                </div>
+              </div>
+
+              <!-- Actions for Peer -->
+              <div class="incoming-actions" *ngIf="req.status === 'PENDING_PEER'">
+                <button mat-flat-button color="primary" class="accept-btn" (click)="respondToRequest(req.id, true)">
+                  <mat-icon>check</mat-icon> Accept Swap
+                </button>
+                <button mat-stroked-button color="warn" class="reject-btn" (click)="respondToRequest(req.id, false)">
+                  <mat-icon>close</mat-icon> Reject
+                </button>
+              </div>
+
+              <p class="timeline-subtext" *ngIf="req.status !== 'PENDING_PEER'">
+                <span *ngIf="req.status === 'PENDING_INCHARGE'">You accepted! Waiting for In-charge approval...</span>
+                <span *ngIf="req.status === 'APPROVED'">Approved & completed!</span>
+                <span *ngIf="req.status === 'REJECTED'">Rejected.</span>
+              </p>
+            </div>
+            
+          </div>
+
+          <ng-template #noReceivedRequests>
+            <div class="empty-state">
+              <mat-icon>mail_outline</mat-icon>
+              <p>You have no incoming swap requests.</p>
+            </div>
+          </ng-template>
+        </div>
+      </mat-tab>
+
+    </mat-tab-group>
+  </mat-card>
+</div>

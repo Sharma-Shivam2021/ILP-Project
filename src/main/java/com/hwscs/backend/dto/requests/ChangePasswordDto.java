@@ -10,10 +10,7 @@ public class ChangePasswordDto {
     @NotBlank
     private String currentPassword;
     @NotBlank
-    @Pattern(
-            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{13,}$",
-            message = "Password must be atleast 13 characters and contain uppercase, lowercase, number, and special characters."
-    )
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{13,}$", message = "Password must be atleast 13 characters and contain uppercase, lowercase, number, and special characters.")
     private String newPassword;
 
     public ChangePasswordDto(@NotBlank String currentPassword, @NotBlank String newPassword) {
@@ -70,7 +67,9 @@ public class ChangePasswordDto {
     }
 
     public static class Builder {
+        @SuppressWarnings("unused")
         private String currentPassword;
+        @SuppressWarnings("unused")
         private String newPassword;
 
         public Builder currentPassword(String currentPassword) {

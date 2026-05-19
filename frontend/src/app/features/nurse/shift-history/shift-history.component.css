@@ -1,0 +1,54 @@
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.header-section h1 {
+  margin: 0;
+  font-size: 28px;
+  color: var(--primary-dark);
+}
+
+.dashboard-card {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+}
+
+.shift-badge {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 13px;
+  display: inline-block;
+}
+.shift-badge.MORNING { background-color: #fff3e0; color: #e65100; border: 1px solid #ffe0b2; }
+.shift-badge.EVENING { background-color: #f3e5f5; color: #4a148c; border: 1px solid #e1bee7; }
+.shift-badge.NIGHT { background-color: #e3f2fd; color: #0d47a1; border: 1px solid #bbdefb; }
+
+.status-text {
+  font-weight: 500;
+  color: #2e7d32; /* completed */
+}
+.status-text.swapped {
+  color: #1565c0; /* swapped */
+}
+
+.empty-state {
+  padding: 48px;
+  text-align: center;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.empty-state mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  opacity: 0.5;
+}

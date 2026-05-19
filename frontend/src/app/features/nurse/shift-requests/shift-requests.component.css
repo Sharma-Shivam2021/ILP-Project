@@ -1,0 +1,235 @@
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.header-section h1 {
+  margin: 0;
+  font-size: 28px;
+  color: var(--primary-dark);
+}
+
+.dashboard-card {
+  width: 100%;
+}
+
+.tab-content {
+  padding: 24px 0;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+/* Peer List Styles */
+.peers-list h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: var(--primary-dark);
+}
+
+.peer-card {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  background: white;
+}
+
+.peer-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #e3f2fd;
+  color: #1976d2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 500;
+  margin-right: 16px;
+}
+
+.peer-info {
+  flex: 1;
+}
+
+.peer-info h4 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+}
+
+.peer-info p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.peer-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+/* Shift Badges */
+.shift-badge {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 12px;
+}
+.shift-badge.MORNING { background-color: #fff3e0; color: #e65100; border: 1px solid #ffe0b2; }
+.shift-badge.EVENING { background-color: #f3e5f5; color: #4a148c; border: 1px solid #e1bee7; }
+.shift-badge.NIGHT { background-color: #e3f2fd; color: #0d47a1; border: 1px solid #bbdefb; }
+
+/* Status Badges */
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.status-badge.APPROVED { background-color: #e8f5e9; color: #2e7d32; }
+.status-badge.PENDING_PEER, .status-badge.PENDING_INCHARGE { background-color: #fff8e1; color: #f57f17; }
+.status-badge.CANCELLED, .status-badge.REJECTED { background-color: #ffebee; color: #c62828; }
+
+/* Tracking Cards */
+.tracking-card {
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.tracking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.peer-details {
+  display: flex;
+  align-items: center;
+}
+.peer-details h4 { margin: 0 0 4px 0; }
+.peer-details p { margin: 0; color: var(--text-secondary); font-size: 14px; }
+.date-text { font-weight: 500; margin-top: 4px !important; }
+
+
+/* Timeline Styles */
+.timeline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding: 0 20px;
+}
+
+.timeline-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.timeline-step .dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  border: 4px solid white;
+  box-shadow: 0 0 0 2px #e0e0e0;
+  margin-bottom: 8px;
+}
+
+.timeline-step.completed .dot {
+  background-color: #4caf50;
+  box-shadow: 0 0 0 2px #4caf50;
+}
+
+.timeline-step.rejected .dot {
+  background-color: #f44336;
+  box-shadow: 0 0 0 2px #f44336;
+}
+
+.timeline-step .label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.timeline-step.completed .label { color: #4caf50; }
+.timeline-step.rejected .label { color: #f44336; }
+
+.timeline .line {
+  flex: 1;
+  height: 2px;
+  background-color: #e0e0e0;
+  margin: 0 8px;
+  position: relative;
+  top: -12px;
+  z-index: 1;
+}
+
+.timeline .line.completed {
+  background-color: #4caf50;
+}
+
+.timeline-subtext {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0;
+  font-style: italic;
+}
+
+.empty-state {
+  padding: 48px;
+  text-align: center;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.empty-state mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  opacity: 0.5;
+}
+
+/* Incoming Actions Styles */
+.incoming-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed #e0e0e0;
+}
+
+.incoming-actions button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.incoming-actions .accept-btn {
+  background-color: #2e7d32;
+  color: white;
+}
+
+.incoming-actions .reject-btn {
+  border-color: #c62828;
+  color: #c62828;
+}
+

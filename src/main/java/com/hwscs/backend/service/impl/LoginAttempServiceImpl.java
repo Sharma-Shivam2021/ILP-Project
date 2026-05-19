@@ -6,7 +6,9 @@ import com.hwscs.backend.service.interfaces.LoginAttemptService;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import org.springframework.stereotype.Service;
 
+@Service
 public class LoginAttempServiceImpl implements LoginAttemptService {
 
     private static final int MAX_ATTEMPTS = 4;

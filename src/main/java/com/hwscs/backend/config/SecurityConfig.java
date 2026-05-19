@@ -61,7 +61,7 @@ public class SecurityConfig {
                         ).permitAll()
 
                         // Nurse endpoints
-                        .requestMatchers("/api/nurses/me/**").hasRole("NURSE")
+                        .requestMatchers("/api/nurses/me", "/api/nurses/me/**").hasRole("NURSE")
                         .requestMatchers(HttpMethod.POST, "/api/shift-requests/create").hasRole("NURSE")
                         .requestMatchers("/api/shift-requests/peer-response").hasRole("NURSE")
                         .requestMatchers(HttpMethod.PUT, "/api/shift-requests/*/cancel").hasRole("NURSE")

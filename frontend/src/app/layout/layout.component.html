@@ -1,0 +1,69 @@
+<mat-sidenav-container class="sidenav-container">
+  <!-- Sidebar -->
+  <mat-sidenav #sidenav mode="side" opened class="sidenav" [fixedInViewport]="true">
+    <div class="sidenav-header">
+      <mat-icon color="primary" class="logo-icon">local_hospital</mat-icon>
+      <h2>HWSCS</h2>
+    </div>
+    
+    <mat-divider></mat-divider>
+
+    <mat-nav-list>
+      <a mat-list-item [routerLink]="getDashboardLink()" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon matListItemIcon>home</mat-icon>
+        <div matListItemTitle>Home</div>
+      </a>
+      
+      <ng-container *ngIf="user?.role === 'NURSE'">
+        <a mat-list-item routerLink="/nurse/shifts" routerLinkActive="active-link">
+          <mat-icon matListItemIcon>event_note</mat-icon>
+          <div matListItemTitle>Shifts</div>
+        </a>
+        <a mat-list-item routerLink="/nurse/requests" routerLinkActive="active-link">
+          <mat-icon matListItemIcon>swap_horiz</mat-icon>
+          <div matListItemTitle>Requests</div>
+        </a>
+        <a mat-list-item routerLink="/nurse/history" routerLinkActive="active-link">
+          <mat-icon matListItemIcon>history</mat-icon>
+          <div matListItemTitle>History</div>
+        </a>
+        <a mat-list-item routerLink="/nurse/profile" routerLinkActive="active-link">
+          <mat-icon matListItemIcon>person</mat-icon>
+          <div matListItemTitle>Profile</div>
+        </a>
+      </ng-container>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <!-- Main Content -->
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="toolbar">
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Hospital Ward Shift Scheduling</span>
+      <span class="spacer"></span>
+      
+      <div class="user-info" *ngIf="user">
+        <span class="user-name">{{ user.name }}</span>
+        <span class="user-role">{{ user.role }}</span>
+      </div>
+      
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      
+      <!-- Material menu needs MatMenuModule, but we can just logout directly for now or add menu -->
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </mat-toolbar>
+
+    <div class="main-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

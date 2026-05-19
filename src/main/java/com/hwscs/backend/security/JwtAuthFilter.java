@@ -35,8 +35,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
-            @NonNull FilterChain filterChain
-    ) throws ServletException, IOException {
+            @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
 
@@ -63,7 +62,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             User user = userRepository.findByUsername(userDetails.getUsername()).orElse(null);
 
             if (user != null && Boolean.TRUE.equals(user.getFirstLogin())) {
-                boolean allowedPath = path.contains("//api/profile/change-password");
+                boolean allowedPath = path.contains("/api/profile/change-password");
                 if (!allowedPath) {
                     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                     response.getWriter().write("Password change required before accessing system");
@@ -72,8 +71,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
 
             if (jwtUtil.isTokenValid(jwt, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
+                        null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }

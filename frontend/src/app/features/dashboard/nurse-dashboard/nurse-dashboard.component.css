@@ -1,0 +1,85 @@
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.header-section h1 {
+  margin: 0;
+  font-size: 28px;
+  color: var(--primary-dark);
+}
+
+.stats-row {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  flex: 1;
+  min-width: 200px;
+}
+
+.stat-card h2 {
+  font-size: 36px;
+  margin: 16px 0 0 16px;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.dashboard-card {
+  width: 100%;
+}
+
+mat-card-header {
+  margin-bottom: 16px;
+}
+
+mat-card-title {
+  font-weight: 500;
+  font-size: 18px;
+}
+
+table {
+  width: 100%;
+}
+
+.empty-state {
+  padding: 24px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-badge.APPROVED {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.PENDING_PEER, .status-badge.PENDING_INCHARGE {
+  background-color: #fff8e1;
+  color: #f57f17;
+}
+
+.status-badge.CANCELLED, .status-badge.REJECTED {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.status-badge.NORMAL {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.SWAPPED {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}

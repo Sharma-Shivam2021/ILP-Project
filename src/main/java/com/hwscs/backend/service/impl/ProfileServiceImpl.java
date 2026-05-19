@@ -102,6 +102,7 @@ public class ProfileServiceImpl implements ProfileService {
             throw new InvalidRequestException("Current password is incorrect");
         }
         user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+        user.setFirstLogin(false);
         userRepository.save(user);
 
     }

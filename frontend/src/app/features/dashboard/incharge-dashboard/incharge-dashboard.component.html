@@ -1,0 +1,95 @@
+<div class="dashboard-container" *ngIf="dashboardData$ | async as data">
+  <div class="header-section">
+    <h1>Incharge Dashboard</h1>
+    <p>Department: {{ data.departmentName }}</p>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-row">
+    <mat-card class="stat-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar color="primary">people</mat-icon>
+        <mat-card-title>Total Nurses</mat-card-title>
+      </mat-card-header>
+      <mat-card-content><h2>{{ data.totalNurses }}</h2></mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar color="primary">event_available</mat-icon>
+        <mat-card-title>Assigned Today</mat-card-title>
+      </mat-card-header>
+      <mat-card-content><h2>{{ data.assignedToday }}</h2></mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar color="warn">event_busy</mat-icon>
+        <mat-card-title>Unassigned Today</mat-card-title>
+      </mat-card-header>
+      <mat-card-content><h2>{{ data.unassignedToday }}</h2></mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar color="accent">pending_actions</mat-icon>
+        <mat-card-title>Pending Approvals</mat-card-title>
+      </mat-card-header>
+      <mat-card-content><h2>{{ data.pendingApprovals }}</h2></mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar color="primary">swap_horiz</mat-icon>
+        <mat-card-title>Active Swap Requests</mat-card-title>
+      </mat-card-header>
+      <mat-card-content><h2>{{ data.activeSwapRequests }}</h2></mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Today's Assignments Table -->
+  <mat-card class="dashboard-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar color="primary">today</mat-icon>
+      <mat-card-title>Today's Assignments</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="data.todayAssignments" class="mat-elevation-z0" *ngIf="(data.todayAssignments?.length || 0) > 0; else noAssignments">
+        <ng-container matColumnDef="nurse">
+          <th mat-header-cell *matHeaderCellDef> Nurse </th>
+          <td mat-cell *matCellDef="let el"> {{ el.nurseFullName }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <td mat-cell *matCellDef="let el"> {{ el.shiftDate }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="shift">
+          <th mat-header-cell *matHeaderCellDef> Shift </th>
+          <td mat-cell *matCellDef="let el"> {{ el.shiftName }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="time">
+          <th mat-header-cell *matHeaderCellDef> Time </th>
+          <td mat-cell *matCellDef="let el"> {{ el.startTime }} – {{ el.endTime }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="swapped">
+          <th mat-header-cell *matHeaderCellDef> Swapped? </th>
+          <td mat-cell *matCellDef="let el">
+            <span class="status-badge" [ngClass]="el.isSwapped ? 'SWAPPED' : 'NORMAL'">
+              {{ el.isSwapped ? 'Yes' : 'No' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="assignmentColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: assignmentColumns;"></tr>
+      </table>
+      <ng-template #noAssignments>
+        <p class="empty-state">No assignments for today.</p>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+</div>
