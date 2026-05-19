@@ -1,0 +1,48 @@
+.staffing-container { display: flex; flex-direction: column; gap: 24px; }
+.header-section h1 { margin: 0; font-size: 28px; font-weight: 700; color: var(--primary-dark); }
+.subtitle { margin: 4px 0 0; color: var(--text-secondary); font-size: 15px; }
+
+/* Default: roster takes full width */
+.staffing-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: start; }
+/* Split layout only when assign form is open */
+.staffing-grid.has-form { grid-template-columns: 1fr 420px; }
+@media (max-width: 960px) { .staffing-grid.has-form { grid-template-columns: 1fr; } }
+
+.staffing-card { border: 1px solid var(--border-color); padding: 16px; }
+
+.datepicker-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.datepicker-field { flex: 1; min-width: 200px; }
+.btn-assign { background-color: var(--primary) !important; color: white !important; white-space: nowrap; }
+
+.summary-row { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.summary-chip { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+.summary-chip.assigned { background: #e8f5e9; color: #2e7d32; }
+.summary-chip.unassigned { background: #fce4ec; color: #c62828; }
+.summary-chip.total { background: rgba(15,157,88,0.1); color: var(--primary-dark); }
+.summary-chip mat-icon { font-size: 16px; width: 16px; height: 16px; }
+
+.table-container { overflow-x: auto; }
+table { width: 100%; }
+
+.nurse-cell { display: flex; align-items: center; gap: 10px; }
+.avatar-sm { width: 32px; height: 32px; border-radius: 50%; background: rgba(15,157,88,0.15); color: var(--primary-dark); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+.shift-badge { padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+.shift-badge.Morning { background: #fffde7; color: #f57f17; }
+.shift-badge.Evening { background: #f3e5f5; color: #7b1fa2; }
+.shift-badge.Night { background: #e1f5fe; color: #0288d1; }
+.shift-badge { background: rgba(15,157,88,0.1); color: var(--primary-dark); }
+
+.status-badge { padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+.status-badge.NORMAL { background: #e8f5e9; color: #2e7d32; }
+.status-badge.SWAPPED { background: #fff8e1; color: #f57f17; }
+
+.loading-state, .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 24px; color: var(--text-secondary); gap: 10px; }
+.loading-state mat-icon, .empty-state mat-icon { font-size: 40px; width: 40px; height: 40px; opacity: 0.5; }
+.spin { animation: spin 1.4s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.form-content { display: flex; flex-direction: column; gap: 16px; margin-top: 16px; }
+.form-desc { margin: 2px 0 0; font-size: 13px; color: var(--text-secondary); }
+.w-100 { width: 100%; }
+.form-actions { display: flex; justify-content: flex-end; gap: 8px; }

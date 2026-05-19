@@ -1,39 +1,44 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global Design System - Medical SaaS Polish */
 
 :root {
-  /* Color Palette */
-  --primary: #3f51b5; /* Indigo */
-  --primary-light: #757de8;
-  --primary-dark: #002984;
-  --accent: #ff4081; /* Pink */
-  --accent-light: #ff79b0;
-  --accent-dark: #c60055;
-  --warn: #f44336;
+  /* Core Colors - Refined for Modern Look */
+  --primary: #4f46e5; /* Modern Indigo */
+  --primary-light: #818cf8;
+  --primary-dark: #3730a3;
+  --accent: #f43f5e; /* Rose */
+  --accent-light: #fb7185;
+  --accent-dark: #be123c;
+  --warn: #ef4444; /* Red */
   
-  --bg-color: #f5f7fa;
+  /* Soft, clean hospital-friendly surface colors */
+  --bg-color: #f8fafc; /* Tailwind Slate-50 - softer than white, very clean */
   --surface-color: #ffffff;
-  --text-primary: rgba(0, 0, 0, 0.87);
-  --text-secondary: rgba(0, 0, 0, 0.54);
-  --border-color: rgba(0, 0, 0, 0.12);
+  --text-primary: #0f172a; /* Slate-900 */
+  --text-secondary: #64748b; /* Slate-500 */
+  --border-color: #e2e8f0; /* Slate-200 */
 
   /* Typography */
-  --font-family: 'Inter', sans-serif;
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  /* Shared Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
 }
 
 /* Dynamic theme overrides based on user role */
 .theme-NURSING_INCHARGE {
-  --primary: #0f9d58; /* Emerald Green */
-  --primary-light: #4cbe87;
-  --primary-dark: #0b703e;
-  --accent: #ffb300; /* Amber */
+  --primary: #10b981; /* Emerald Green */
+  --primary-light: #34d399;
+  --primary-dark: #047857;
+  --accent: #f59e0b; /* Amber */
 }
 
 .theme-DUTY_OFFICER {
-  --primary: #673ab7; /* Deep Purple */
-  --primary-light: #9575cd;
-  --primary-dark: #311b92;
+  --primary: #8b5cf6; /* Violet */
+  --primary-light: #a78bfa;
+  --primary-dark: #5b21b6;
 }
-
 
 html, body {
   height: 100%;
@@ -41,24 +46,73 @@ html, body {
   font-family: var(--font-family);
   background-color: var(--bg-color);
   color: var(--text-primary);
+  /* Make fonts crisp and beautiful */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Add custom styling for material inputs/buttons to feel modern */
+/* Modernize Material Cards */
 .mat-mdc-card {
-  border-radius: 12px !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  background-color: var(--surface-color) !important;
+  border-radius: 16px !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: var(--shadow-md) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
 }
 
+/* Subtle hover lift for cards that are interactive (optional, apply .hover-lift class) */
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg) !important;
+}
+
+/* Modernize Buttons */
 .mat-mdc-button-base {
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.3px !important;
+}
+
+.mdc-button--raised {
+  box-shadow: var(--shadow-sm) !important;
+}
+
+/* Form Fields */
+.mat-mdc-text-field-wrapper {
+  background-color: var(--surface-color) !important;
   border-radius: 8px !important;
 }
 
-/* Glassmorphism utility for login and cool panels */
+/* Tables */
+.mat-mdc-table {
+  background: transparent !important;
+}
+.mat-mdc-header-cell {
+  color: var(--text-secondary) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  font-size: 12px !important;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--border-color) !important;
+}
+.mat-mdc-cell {
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+/* Dialogs */
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 20px !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+/* Glassmorphism utility */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: var(--shadow-lg);
 }
 
 .spacer {

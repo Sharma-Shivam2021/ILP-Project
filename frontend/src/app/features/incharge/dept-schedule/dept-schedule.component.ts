@@ -45,14 +45,14 @@ export class DeptScheduleComponent implements OnInit {
   departmentId!: number;
   departmentName = '';
   selectedDate: string = new Date().toISOString().split('T')[0];
-  
+
   assignments: NurseShiftResponseDto[] = [];
   nurses: NurseResponseDto[] = [];
   shifts: ShiftResponseDto[] = [];
-  
+
   loading = false;
   showAssignForm = false;
-  
+
   assignDto: AssignShiftDto = {
     nurseId: 0,
     shiftId: 0,
@@ -88,8 +88,9 @@ export class DeptScheduleComponent implements OnInit {
 
   loadData() {
     this.loading = true;
+    const dateStr = this.formatDate(this.selectedDate);
     // Get schedule
-    this.shiftService.getDepartmentSchedule(this.departmentId, this.selectedDate).subscribe({
+    this.shiftService.getDepartmentSchedule(this.departmentId, dateStr).subscribe({
       next: (schedule) => {
         this.assignments = schedule;
         this.loading = false;
@@ -145,8 +146,13 @@ export class DeptScheduleComponent implements OnInit {
       return;
     }
 
+    const payload = {
+      ...this.assignDto,
+      shiftDate: this.formatDate(this.assignDto.shiftDate)
+    };
+
     this.loading = true;
-    this.shiftService.assignShift(this.assignDto).subscribe({
+    this.shiftService.assignShift(payload).subscribe({
       next: (res) => {
         this.snackBar.open(`Shift successfully assigned to ${res.nurseFullName}!`, 'Close', { duration: 3000 });
         this.showAssignForm = false;
@@ -164,5 +170,22 @@ export class DeptScheduleComponent implements OnInit {
   getInitials(name: string): string {
     if (!name) return 'N';
     return name.slice(0, 2).toUpperCase();
+  }
+
+  private formatDate(date: any): string {
+    if (!date) return '';
+    if (typeof date === 'string') {
+      // If it's already a string in ISO format or close to it
+      if (date.includes('T')) return date.split('T')[0];
+      return date;
+    }
+
+    // Handle JS Date object
+    const d = new Date(date);
+    const month = '' + (d.getMonth() + 1);
+    const day = '' + d.getDate();
+    const year = d.getFullYear();
+
+    return [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-');
   }
 }

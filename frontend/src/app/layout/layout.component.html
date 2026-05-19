@@ -51,6 +51,21 @@
           <div matListItemTitle>Create Shift</div>
         </a>
       </ng-container>
+
+      <ng-container *ngIf="user?.role === 'DUTY_OFFICER'">
+        <a mat-list-item routerLink="/duty-officer/staffing" routerLinkActive="active-link">
+          <mat-icon matListItemIcon>calendar_month</mat-icon>
+          <div matListItemTitle>Staffing</div>
+        </a>
+        <a mat-list-item routerLink="/duty-officer/requests" routerLinkActive="active-link">
+          <mat-icon matListItemIcon>swap_horiz</mat-icon>
+          <div matListItemTitle>Swap Requests</div>
+        </a>
+        <a mat-list-item routerLink="/duty-officer/nurses" routerLinkActive="active-link">
+          <mat-icon matListItemIcon>badge</mat-icon>
+          <div matListItemTitle>Nurses</div>
+        </a>
+      </ng-container>
     </mat-nav-list>
 
   </mat-sidenav>
@@ -61,7 +76,10 @@
       <button mat-icon-button (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
-      <span>Hospital Ward Shift Scheduling</span>
+      <div class="toolbar-title">
+        <mat-icon class="toolbar-logo" *ngIf="!sidenav.opened">local_hospital</mat-icon>
+        <span>Hospital Workforce Shift Coordination System</span>
+      </div>
       <span class="spacer"></span>
       
       <div class="user-info" *ngIf="user">

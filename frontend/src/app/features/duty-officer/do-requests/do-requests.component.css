@@ -1,0 +1,178 @@
+.requests-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.header-section h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+.subtitle {
+    margin: 4px 0 0;
+    color: var(--text-secondary);
+    font-size: 15px;
+}
+
+.requests-card {
+    border: 1px solid var(--border-color);
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.nurse-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.avatar-sm {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(15, 157, 88, 0.15);
+    color: var(--primary-dark);
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.avatar-sm.peer {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.name {
+    font-size: 13px;
+}
+
+.muted {
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.swap-arrow {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+    color: var(--text-secondary);
+    margin: 0 4px;
+}
+
+.shift-badge {
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.shift-badge.Morning {
+    background: #fffde7;
+    color: #f57f17;
+}
+
+.shift-badge.Evening {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.shift-badge.Night {
+    background: #e1f5fe;
+    color: #0288d1;
+}
+
+.shift-badge {
+    background: rgba(15, 157, 88, 0.1);
+    color: var(--primary-dark);
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-badge.PENDING_PEER {
+    background: #fff8e1;
+    color: #f57f17;
+}
+
+.status-badge.PENDING_INCHARGE {
+    background: #ede7f6;
+    color: #5e35b1;
+}
+
+.status-badge.APPROVED {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-badge.REJECTED {
+    background: #fce4ec;
+    color: #c62828;
+}
+
+.status-badge.CANCELLED {
+    background: #f5f5f5;
+    color: #757575;
+}
+
+.loading-state,
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 24px;
+    color: var(--text-secondary);
+    gap: 12px;
+}
+
+.loading-state mat-icon,
+.empty-state mat-icon {
+    font-size: 44px;
+    width: 44px;
+    height: 44px;
+    opacity: 0.4;
+}
+
+.empty-state h3 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--text-primary);
+}
+
+.empty-state p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.spin {
+    animation: spin 1.4s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

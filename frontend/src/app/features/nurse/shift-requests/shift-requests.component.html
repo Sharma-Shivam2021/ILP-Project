@@ -106,7 +106,15 @@
                 <span *ngIf="req.status === 'PENDING_INCHARGE'">Peer accepted, waiting for In-charge approval...</span>
                 <span *ngIf="req.status === 'APPROVED'">Swap approved!</span>
                 <span *ngIf="req.status === 'REJECTED'">Swap was rejected.</span>
+                <span *ngIf="req.status === 'CANCELLED'">You cancelled this request.</span>
               </p>
+
+              <!-- Actions for Requester -->
+              <div class="incoming-actions" *ngIf="req.status === 'PENDING_PEER' || req.status === 'PENDING_INCHARGE'">
+                <button mat-stroked-button color="warn" class="reject-btn" (click)="cancelSwapRequest(req.id)">
+                  <mat-icon>cancel</mat-icon> Cancel Request
+                </button>
+              </div>
             </div>
             
           </div>

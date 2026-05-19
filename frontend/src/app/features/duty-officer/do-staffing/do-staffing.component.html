@@ -1,0 +1,91 @@
+<div class="staffing-container">
+  <div class="header-section">
+    <h1>Staffing Report</h1>
+    <p class="subtitle">Read-only daily ward coverage overview for your department</p>
+  </div>
+
+  <div class="staffing-grid">
+    <mat-card class="staffing-card roster-panel">
+      <mat-card-header class="panel-header">
+        <div class="datepicker-row">
+          <mat-form-field appearance="outline" class="datepicker-field">
+            <mat-label>Report Date</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" (dateChange)="onDateChange()">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        <!-- Summary Row -->
+        <div class="summary-row" *ngIf="staffingReport && !loading">
+          <div class="summary-chip assigned">
+            <mat-icon>event_available</mat-icon>
+            <span>{{ staffingReport.assignedNurses }} Assigned</span>
+          </div>
+          <div class="summary-chip unassigned">
+            <mat-icon>event_busy</mat-icon>
+            <span>{{ staffingReport.unassignedNurses }} Unassigned</span>
+          </div>
+          <div class="summary-chip total">
+            <mat-icon>group</mat-icon>
+            <span>{{ staffingReport.totalNurse }} Total</span>
+          </div>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading-state" *ngIf="loading && (!staffingReport || staffingReport.assignments.length === 0)">
+          <mat-icon class="spin">sync</mat-icon>
+          <p>Loading staffing data...</p>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container" *ngIf="staffingReport && staffingReport.assignments.length > 0">
+          <table mat-table [dataSource]="staffingReport.assignments" class="mat-elevation-z0">
+            <ng-container matColumnDef="nurse">
+              <th mat-header-cell *matHeaderCellDef>Nurse</th>
+              <td mat-cell *matCellDef="let el">
+                <div class="nurse-cell">
+                  <span class="avatar-sm">{{ getInitials(el.nurseFullName) }}</span>
+                  <span class="name">{{ el.nurseFullName }}</span>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="shift">
+              <th mat-header-cell *matHeaderCellDef>Shift</th>
+              <td mat-cell *matCellDef="let el">
+                <span class="shift-badge" [ngClass]="el.shiftName">{{ el.shiftName }}</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="time">
+              <th mat-header-cell *matHeaderCellDef>Time</th>
+              <td mat-cell *matCellDef="let el">{{ el.startTime | slice:0:5 }} – {{ el.endTime | slice:0:5 }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let el">
+                <span class="status-badge" [ngClass]="el.isSwapped ? 'SWAPPED' : 'NORMAL'">
+                  {{ el.isSwapped ? 'Swapped' : 'Regular' }}
+                </span>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+
+        <!-- Empty -->
+        <div class="empty-state" *ngIf="!loading && staffingReport && staffingReport.assignments.length === 0">
+          <mat-icon>calendar_today</mat-icon>
+          <h3>No Assignments</h3>
+          <p>No nurses are scheduled for this date.</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

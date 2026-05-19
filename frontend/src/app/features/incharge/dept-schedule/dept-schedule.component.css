@@ -43,13 +43,17 @@
 /* Grid Layout */
 .schedule-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr;
   gap: 24px;
   align-items: start;
 }
 
+.schedule-grid.has-form {
+  grid-template-columns: 2fr 1fr;
+}
+
 @media (max-width: 960px) {
-  .schedule-grid {
+  .schedule-grid, .schedule-grid.has-form {
     grid-template-columns: 1fr;
   }
 }

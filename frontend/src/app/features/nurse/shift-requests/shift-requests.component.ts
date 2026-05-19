@@ -177,4 +177,17 @@ export class ShiftRequestsComponent implements OnInit {
       }
     });
   }
+
+  cancelSwapRequest(requestId: number) {
+    this.shiftRequestService.cancelRequest(requestId).subscribe({
+      next: () => {
+        this.snackBar.open('Swap request cancelled successfully.', 'Close', { duration: 3000 });
+        this.loadMyRequests(); // Refresh tracking list
+      },
+      error: (err) => {
+        console.error('Failed to cancel request', err);
+        this.snackBar.open(err.error?.message || 'Failed to cancel request.', 'Close', { duration: 3000 });
+      }
+    });
+  }
 }
