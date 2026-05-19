@@ -18,4 +18,8 @@ export class NurseService {
   getMyShifts(): Observable<NurseShiftResponseDto[]> {
     return this.http.get<NurseShiftResponseDto[]>(`${this.apiUrl}/me/shifts`);
   }
+
+  getNursesByDepartment(departmentId: number): Observable<NurseResponseDto[]> {
+    return this.http.get<NurseResponseDto[]>(`${this.apiUrl}/department/${departmentId}`);
+  }
 }

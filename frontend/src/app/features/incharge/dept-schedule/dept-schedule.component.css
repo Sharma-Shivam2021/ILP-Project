@@ -1,0 +1,250 @@
+.schedule-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Header */
+.header-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-title h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+.dept-badge {
+  background-color: var(--primary-light);
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(15, 157, 88, 0.2);
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 15px;
+}
+
+/* Grid Layout */
+.schedule-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .schedule-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.schedule-card {
+  border: 1px solid var(--border-color);
+  padding: 16px;
+}
+
+.datepicker-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.datepicker-field {
+  min-width: 200px;
+}
+
+.btn-assign-toggle {
+  background-color: var(--primary) !important;
+  color: white !important;
+  height: 48px;
+  margin-top: -12px;
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 16px;
+  color: var(--text-secondary);
+  gap: 12px;
+}
+
+.loading-state mat-icon.spin {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Table Style */
+.table-container {
+  overflow-x: auto;
+  margin-top: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.nurse-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-sm {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: rgba(15, 157, 88, 0.15);
+  color: var(--primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.nurse-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.nurse-details .name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.shift-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.shift-badge.Morning {
+  background-color: #fffde7;
+  color: #f57f17;
+}
+
+.shift-badge.Evening {
+  background-color: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.shift-badge.Night {
+  background-color: #e1f5fe;
+  color: #0288d1;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.status-badge.NORMAL {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.SWAPPED {
+  background-color: #e3f2fd;
+  color: #1565c0;
+}
+
+/* Form Panel */
+.form-panel mat-card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+.form-desc {
+  margin: 2px 0 0 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.btn-submit {
+  background-color: var(--primary) !important;
+  color: white !important;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  color: var(--text-secondary);
+  gap: 12px;
+}
+
+.empty-state mat-icon {
+  font-size: 56px;
+  width: 56px;
+  height: 56px;
+  opacity: 0.5;
+  margin-bottom: 8px;
+}
+
+.empty-state h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 14px;
+}

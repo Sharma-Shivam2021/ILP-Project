@@ -1,0 +1,183 @@
+.create-shift-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Header */
+.header-section h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+.header-section .subtitle {
+  margin: 4px 0 0 0;
+  color: var(--text-secondary);
+  font-size: 15px;
+}
+
+/* Grid Layout */
+.shift-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .shift-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.shift-card {
+  border: 1px solid var(--border-color);
+  padding: 16px;
+}
+
+.form-panel mat-card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+.form-desc {
+  margin: 2px 0 0 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.btn-submit {
+  background-color: var(--primary) !important;
+  color: white !important;
+  height: 48px;
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 16px;
+  color: var(--text-secondary);
+  gap: 12px;
+}
+
+.loading-state mat-icon.spin {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Table Style */
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.shift-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+/* Specific Badge Colors */
+.shift-badge.Morning {
+  background-color: #fffde7;
+  color: #f57f17;
+}
+
+.shift-badge.Evening {
+  background-color: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.shift-badge.Night {
+  background-color: #e1f5fe;
+  color: #0288d1;
+}
+
+/* Fallback default colors for custom shifts */
+.shift-badge {
+  background-color: rgba(15, 157, 88, 0.1);
+  color: var(--primary-dark);
+}
+
+.status-indicator {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.status-indicator.active {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-indicator.inactive {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  color: var(--text-secondary);
+  gap: 12px;
+}
+
+.empty-state mat-icon {
+  font-size: 56px;
+  width: 56px;
+  height: 56px;
+  opacity: 0.5;
+  margin-bottom: 8px;
+}
+
+.empty-state h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 14px;
+}

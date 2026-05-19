@@ -1,0 +1,139 @@
+<div class="schedule-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="header-title">
+      <h1>Roster Schedule</h1>
+      <span class="dept-badge">{{ departmentName }} Department</span>
+    </div>
+    <p class="subtitle">Assign shifts to nurses and track daily roster schedules</p>
+  </div>
+
+  <!-- Main Grid Split View -->
+  <div class="schedule-grid">
+    <!-- Left Column: Current Roster and Date Picker -->
+    <mat-card class="schedule-card roster-panel">
+      <mat-card-header class="panel-header">
+        <div class="datepicker-row">
+          <mat-form-field appearance="outline" class="datepicker-field">
+            <mat-label>View Date</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" (dateChange)="onDateChange()">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          
+          <button mat-raised-button color="primary" class="btn-assign-toggle" (click)="toggleAssignForm()">
+            <mat-icon>{{ showAssignForm ? 'close' : 'add' }}</mat-icon>
+            <span>{{ showAssignForm ? 'Close Assignment Form' : 'Assign New Shift' }}</span>
+          </button>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        <!-- Loading State -->
+        <div class="loading-state" *ngIf="loading && assignments.length === 0">
+          <mat-icon class="spin">sync</mat-icon>
+          <p>Fetching scheduled shifts...</p>
+        </div>
+
+        <!-- Assignments Table -->
+        <div class="table-container" *ngIf="assignments.length > 0">
+          <table mat-table [dataSource]="assignments" class="mat-elevation-z0">
+            <ng-container matColumnDef="nurse">
+              <th mat-header-cell *matHeaderCellDef> Nurse </th>
+              <td mat-cell *matCellDef="let el">
+                <div class="nurse-cell">
+                  <span class="avatar-sm">{{ getInitials(el.nurseFullName) }}</span>
+                  <div class="nurse-details">
+                    <span class="name">{{ el.nurseFullName }}</span>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="shift">
+              <th mat-header-cell *matHeaderCellDef> Shift </th>
+              <td mat-cell *matCellDef="let el">
+                <span class="shift-badge" [ngClass]="el.shiftName">
+                  {{ el.shiftName }}
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="time">
+              <th mat-header-cell *matHeaderCellDef> Time </th>
+              <td mat-cell *matCellDef="let el">
+                {{ el.startTime | slice:0:5 }} – {{ el.endTime | slice:0:5 }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef> Roster Status </th>
+              <td mat-cell *matCellDef="let el">
+                <span class="status-badge" [ngClass]="el.isSwapped ? 'SWAPPED' : 'NORMAL'">
+                  {{ el.isSwapped ? 'Swapped' : 'Regular' }}
+                </span>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" *ngIf="!loading && assignments.length === 0">
+          <mat-icon>calendar_today</mat-icon>
+          <h3>No Shifts Assigned</h3>
+          <p>There are no nurse shift assignments made for {{ selectedDate | date:'fullDate' }}.</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Right Column: Shift Assignment Form (Dynamic Overlay Panel) -->
+    <mat-card class="schedule-card form-panel" *ngIf="showAssignForm">
+      <mat-card-header>
+        <mat-card-title>Assign Shift</mat-card-title>
+        <p class="form-desc">Schedule a nurse for a specific shift on the designated date</p>
+      </mat-card-header>
+
+      <mat-card-content class="form-content">
+        <!-- Nurse Select -->
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Select Nurse</mat-label>
+          <mat-select [(ngModel)]="assignDto.nurseId">
+            <mat-option *ngFor="let nurse of nurses" [value]="nurse.id">
+              {{ nurse.fullName }} ({{ nurse.employeeCode }})
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Shift Select -->
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Select Shift Type</mat-label>
+          <mat-select [(ngModel)]="assignDto.shiftId">
+            <mat-option *ngFor="let shift of shifts" [value]="shift.id">
+              {{ shift.shiftName }} ({{ shift.startTime | slice:0:5 }} – {{ shift.endTime | slice:0:5 }})
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Assignment Date Picker -->
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Shift Date</mat-label>
+          <input matInput [matDatepicker]="formPicker" [(ngModel)]="assignDto.shiftDate">
+          <mat-datepicker-toggle matIconSuffix [for]="formPicker"></mat-datepicker-toggle>
+          <mat-datepicker #formPicker></mat-datepicker>
+        </mat-form-field>
+
+        <!-- Buttons -->
+        <div class="form-actions">
+          <button mat-button color="primary" (click)="toggleAssignForm()">Cancel</button>
+          <button mat-raised-button color="primary" class="btn-submit" (click)="submitAssignment()" [disabled]="loading">
+            <mat-icon *ngIf="loading" class="spin">sync</mat-icon>
+            <span>Assign Nurse</span>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

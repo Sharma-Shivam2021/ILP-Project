@@ -1,0 +1,112 @@
+<div class="create-shift-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <h1>Shift Management</h1>
+    <p class="subtitle">Create new shift configurations and view existing scheduling shifts</p>
+  </div>
+
+  <!-- Grid Split View -->
+  <div class="shift-grid">
+    <!-- Left Column: Create Form -->
+    <mat-card class="shift-card form-panel">
+      <mat-card-header>
+        <mat-card-title>Create New Shift</mat-card-title>
+        <p class="form-desc">Define name and operational times for a new shift configuration</p>
+      </mat-card-header>
+
+      <mat-card-content class="form-content">
+        <!-- Shift Name -->
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Shift Name</mat-label>
+          <input matInput [(ngModel)]="shiftName" placeholder="e.g. Morning, Evening, Night, General" required>
+          <mat-icon matPrefix>badge</mat-icon>
+        </mat-form-field>
+
+        <!-- Start Time -->
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Start Time</mat-label>
+          <input matInput type="time" [(ngModel)]="startTime" required>
+          <mat-icon matPrefix>schedule</mat-icon>
+        </mat-form-field>
+
+        <!-- End Time -->
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>End Time</mat-label>
+          <input matInput type="time" [(ngModel)]="endTime" required>
+          <mat-icon matPrefix>more_time</mat-icon>
+        </mat-form-field>
+
+        <!-- Action Buttons -->
+        <div class="form-actions">
+          <button mat-raised-button color="primary" class="btn-submit" (click)="submitCreateShift()" [disabled]="loading">
+            <mat-icon *ngIf="loading" class="spin">sync</mat-icon>
+            <mat-icon *ngIf="!loading">add</mat-icon>
+            <span>Create Shift</span>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Right Column: Existing Shifts Table -->
+    <mat-card class="shift-card list-panel">
+      <mat-card-header>
+        <mat-card-title>Active Shifts Directory</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <!-- Loading State -->
+        <div class="loading-state" *ngIf="loading && shiftsList.length === 0">
+          <mat-icon class="spin">sync</mat-icon>
+          <p>Loading shifts directory...</p>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container" *ngIf="shiftsList.length > 0">
+          <table mat-table [dataSource]="shiftsList" class="mat-elevation-z0">
+            <!-- Name -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Shift Name </th>
+              <td mat-cell *matCellDef="let shift">
+                <span class="shift-badge" [ngClass]="shift.shiftName">
+                  {{ shift.shiftName }}
+                </span>
+              </td>
+            </ng-container>
+
+            <!-- Start Time -->
+            <ng-container matColumnDef="start">
+              <th mat-header-cell *matHeaderCellDef> Start Time </th>
+              <td mat-cell *matCellDef="let shift"> {{ shift.startTime | slice:0:5 }} </td>
+            </ng-container>
+
+            <!-- End Time -->
+            <ng-container matColumnDef="end">
+              <th mat-header-cell *matHeaderCellDef> End Time </th>
+              <td mat-cell *matCellDef="let shift"> {{ shift.endTime | slice:0:5 }} </td>
+            </ng-container>
+
+            <!-- Status -->
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef> Status </th>
+              <td mat-cell *matCellDef="let shift">
+                <span class="status-indicator" [ngClass]="shift.active ? 'active' : 'inactive'">
+                  {{ shift.active ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" *ngIf="!loading && shiftsList.length === 0">
+          <mat-icon>schedule</mat-icon>
+          <h3>No Shifts Defined</h3>
+          <p>There are no shift configurations stored in the system database.</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -20,6 +20,21 @@
   --font-family: 'Inter', sans-serif;
 }
 
+/* Dynamic theme overrides based on user role */
+.theme-NURSING_INCHARGE {
+  --primary: #0f9d58; /* Emerald Green */
+  --primary-light: #4cbe87;
+  --primary-dark: #0b703e;
+  --accent: #ffb300; /* Amber */
+}
+
+.theme-DUTY_OFFICER {
+  --primary: #673ab7; /* Deep Purple */
+  --primary-light: #9575cd;
+  --primary-dark: #311b92;
+}
+
+
 html, body {
   height: 100%;
   margin: 0;

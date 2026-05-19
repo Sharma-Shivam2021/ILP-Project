@@ -1,0 +1,99 @@
+<div class="approvals-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <h1>Swap Request Approvals</h1>
+    <p class="subtitle">Review and authorize peer-accepted shift swap requests awaiting department approval</p>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="loading">
+    <mat-icon class="spin">sync</mat-icon>
+    <p>Loading pending swap reviews...</p>
+  </div>
+
+  <!-- List of Pending Swaps -->
+  <div class="requests-list" *ngIf="!loading && pendingRequests.length > 0">
+    <div class="cards-grid">
+      <mat-card class="request-card" *ngFor="let req of pendingRequests" [ngClass]="{'active-review': activeRequestId === req.id}">
+        <mat-card-header>
+          <div class="card-title-bar">
+            <span class="req-date">Swap Date: <strong>{{ req.requesterShiftDate }}</strong></span>
+            <span class="status-indicator">Peer Accepted</span>
+          </div>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <!-- Swap Details Split Pane -->
+          <div class="swap-flow">
+            <!-- Requester -->
+            <div class="swap-party requester">
+              <span class="party-label">Initiator</span>
+              <div class="party-info">
+                <span class="avatar-lg">{{ req.requesterNurseName | slice:0:2 | uppercase }}</span>
+                <span class="name">{{ req.requesterNurseName }}</span>
+              </div>
+              <div class="shift-details">
+                <span class="shift-badge" [ngClass]="req.requesterShiftName">{{ req.requesterShiftName }}</span>
+                <span class="time">{{ req.requesterShiftStart | slice:0:5 }} – {{ req.requesterShiftEnd | slice:0:5 }}</span>
+              </div>
+            </div>
+
+            <!-- Swap Arrow -->
+            <div class="swap-arrow-icon">
+              <mat-icon>swap_horiz</mat-icon>
+            </div>
+
+            <!-- Peer -->
+            <div class="swap-party peer">
+              <span class="party-label">Peer Nurse</span>
+              <div class="party-info">
+                <span class="avatar-lg">{{ (req.peerNurseName || 'Un') | slice:0:2 | uppercase }}</span>
+                <span class="name">{{ req.peerNurseName || 'N/A' }}</span>
+              </div>
+              <div class="shift-details">
+                <span class="shift-badge" [ngClass]="req.peerShiftName || ''">{{ req.peerShiftName || 'N/A' }}</span>
+                <span class="time">{{ req.peerShiftStart | slice:0:5 }} – {{ req.peerShiftEnd | slice:0:5 }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reason / Remarks from Nurse Swap -->
+          <div class="reason-section" *ngIf="req.remarks">
+            <span class="section-label">Requester's Remarks:</span>
+            <p class="reason-text">"{{ req.remarks }}"</p>
+          </div>
+
+          <!-- Review Panel (Dynamic Inline Action Pane) -->
+          <div class="review-action-panel" *ngIf="activeRequestId === req.id; else startReviewBtn">
+            <mat-form-field appearance="outline" class="remarks-field">
+              <mat-label>Incharge Remarks / Comments</mat-label>
+              <textarea matInput [(ngModel)]="remarks" placeholder="Optional comments regarding approval/rejection..." rows="2"></textarea>
+            </mat-form-field>
+            
+            <div class="action-buttons">
+              <button mat-button color="primary" (click)="cancelReview()" [disabled]="loading">Cancel</button>
+              <button mat-raised-button color="warn" (click)="submitDecision(false)" [disabled]="loading">Reject Swap</button>
+              <button mat-raised-button color="primary" class="btn-approve" (click)="submitDecision(true)" [disabled]="loading">Approve Swap</button>
+            </div>
+          </div>
+
+          <ng-template #startReviewBtn>
+            <div class="review-trigger">
+              <button mat-raised-button color="primary" class="w-100" (click)="startReview(req.id)">
+                <mat-icon>rate_review</mat-icon>
+                <span>Review Request</span>
+              </button>
+            </div>
+          </ng-template>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state-panel" *ngIf="!loading && pendingRequests.length === 0">
+    <mat-icon>verified_user</mat-icon>
+    <h3>All Swaps Authorised</h3>
+    <p>There are no pending swap requests awaiting incharge review in your department.</p>
+  </div>
+</div>

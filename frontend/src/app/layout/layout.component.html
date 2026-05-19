@@ -1,4 +1,4 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container" [ngClass]="'theme-' + user?.role">
   <!-- Sidebar -->
   <mat-sidenav #sidenav mode="side" opened class="sidenav" [fixedInViewport]="true">
     <div class="sidenav-header">
@@ -7,7 +7,7 @@
     </div>
     
     <mat-divider></mat-divider>
-
+ 
     <mat-nav-list>
       <a mat-list-item [routerLink]="getDashboardLink()" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">
         <mat-icon matListItemIcon>home</mat-icon>
@@ -32,7 +32,27 @@
           <div matListItemTitle>Profile</div>
         </a>
       </ng-container>
+
+      <ng-container *ngIf="user?.role === 'NURSING_INCHARGE'">
+        <a mat-list-item routerLink="/incharge/approvals" routerLinkActive="active-link">
+          <mat-icon matListItemIcon>rule</mat-icon>
+          <div matListItemTitle>Requests</div>
+        </a>
+        <a mat-list-item routerLink="/incharge/schedule" routerLinkActive="active-link">
+          <mat-icon matListItemIcon>calendar_month</mat-icon>
+          <div matListItemTitle>Schedule</div>
+        </a>
+        <a mat-list-item routerLink="/incharge/nurses" routerLinkActive="active-link">
+          <mat-icon matListItemIcon>badge</mat-icon>
+          <div matListItemTitle>Nurses</div>
+        </a>
+        <a mat-list-item routerLink="/incharge/create-shift" routerLinkActive="active-link">
+          <mat-icon matListItemIcon>more_time</mat-icon>
+          <div matListItemTitle>Create Shift</div>
+        </a>
+      </ng-container>
     </mat-nav-list>
+
   </mat-sidenav>
 
   <!-- Main Content -->

@@ -17,4 +17,8 @@ export class ProfileService {
   updateProfile(dto: { fullName: string; contactPhone: string; contactEmail: string }): Observable<any> {
     return this.http.put(`${this.apiUrl}/update`, dto);
   }
+
+  getMyProfile(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/me`);
+  }
 }

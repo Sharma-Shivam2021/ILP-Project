@@ -4,65 +4,291 @@
   gap: 24px;
 }
 
-.header-section h1 {
+/* Header */
+.header-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-title h1 {
   margin: 0;
   font-size: 28px;
+  font-weight: 700;
   color: var(--primary-dark);
 }
 
-.header-section p {
-  margin: 4px 0 0 0;
+.dept-badge {
+  background-color: var(--primary-light);
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(15, 157, 88, 0.2);
+}
+
+.subtitle {
+  margin: 0;
   color: var(--text-secondary);
-  font-size: 16px;
+  font-size: 15px;
 }
 
-.stats-row {
-  display: flex;
+/* Metrics Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 24px;
-  flex-wrap: wrap;
 }
 
-.stat-card {
-  flex: 1;
-  min-width: 180px;
+.metric-card {
+  border: 1px solid var(--border-color);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.stat-card h2 {
-  font-size: 36px;
-  margin: 16px 0 0 16px;
+.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.08) !important;
+}
+
+.metric-card mat-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: rgba(15, 157, 88, 0.1);
   color: var(--primary);
+}
+
+.icon-wrapper mat-icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.icon-wrapper.text-orange {
+  background-color: rgba(255, 179, 0, 0.1);
+  color: #ff9800;
+}
+
+.icon-wrapper.text-green {
+  background-color: rgba(76, 190, 135, 0.1);
+  color: #0f9d58;
+}
+
+.icon-wrapper.text-red {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: #f44336;
+}
+
+.metric-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-info mat-card-title {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin: 0;
+}
+
+.metric-info h2 {
+  font-size: 28px;
   font-weight: 700;
+  margin: 2px 0 0 0;
+  color: var(--text-primary);
+}
+
+.trend-text {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.text-green {
+  color: #2e7d32;
+}
+
+.text-orange {
+  color: #e65100;
+}
+
+.text-red {
+  color: #c62828;
+}
+
+.text-muted {
+  color: var(--text-secondary);
+}
+
+/* Dashboard Content Rows */
+.dashboard-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 24px;
+}
+
+@media (max-width: 960px) {
+  .dashboard-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 .dashboard-card {
-  width: 100%;
+  padding: 16px;
+  border: 1px solid var(--border-color);
 }
 
-mat-card-header {
-  margin-bottom: 16px;
+.section-roster .roster-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 12px;
 }
 
-mat-card-title {
-  font-weight: 500;
-  font-size: 18px;
-}
-
-table {
-  width: 100%;
-}
-
-.empty-state {
-  padding: 24px;
-  text-align: center;
+.section-roster .description {
+  margin: 0;
   color: var(--text-secondary);
-  font-style: italic;
+  font-size: 13px;
+}
+
+/* Roster Coverage Progress Items */
+.shift-progress-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.shift-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.bullet {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.bullet.Morning { background-color: #ffd600; }
+.bullet.Evening { background-color: #9c27b0; }
+.bullet.Night { background-color: #03a9f4; }
+
+.shift-values {
+  color: var(--text-secondary);
+}
+
+.shift-values strong {
+  color: var(--text-primary);
+  font-size: 16px;
+}
+
+/* Custom styles for MatProgressBar colors */
+::ng-deep .progress-bar-Morning .mdc-linear-progress__bar-inner {
+  background-color: #ffd600 !important;
+}
+::ng-deep .progress-bar-Morning {
+  background-color: rgba(255, 214, 0, 0.1) !important;
+  border-radius: 4px;
+  height: 8px !important;
+}
+
+::ng-deep .progress-bar-Evening .mdc-linear-progress__bar-inner {
+  background-color: #9c27b0 !important;
+}
+::ng-deep .progress-bar-Evening {
+  background-color: rgba(156, 39, 176, 0.1) !important;
+  border-radius: 4px;
+  height: 8px !important;
+}
+
+::ng-deep .progress-bar-Night .mdc-linear-progress__bar-inner {
+  background-color: #03a9f4 !important;
+}
+::ng-deep .progress-bar-Night {
+  background-color: rgba(3, 169, 244, 0.1) !important;
+  border-radius: 4px;
+  height: 8px !important;
+}
+
+/* Table styling */
+.section-assignments table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.nurse-profile-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-sm {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: rgba(15, 157, 88, 0.15);
+  color: var(--primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.shift-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.shift-badge.Morning {
+  background-color: #fffde7;
+  color: #f57f17;
+}
+
+.shift-badge.Evening {
+  background-color: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.shift-badge.Night {
+  background-color: #e1f5fe;
+  color: #0288d1;
 }
 
 .status-badge {
   padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
 }
 
 .status-badge.NORMAL {
@@ -73,4 +299,21 @@ table {
 .status-badge.SWAPPED {
   background-color: #e3f2fd;
   color: #1565c0;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 16px;
+  color: var(--text-secondary);
+  gap: 12px;
+}
+
+.empty-state mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  opacity: 0.5;
 }

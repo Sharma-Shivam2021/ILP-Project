@@ -54,6 +54,30 @@ export const routes: Routes = [
         data: { roles: [Role.NURSING_INCHARGE] }
       },
       {
+        path: 'incharge/approvals',
+        loadComponent: () => import('./features/incharge/swap-approvals/swap-approvals.component').then(c => c.SwapApprovalsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Role.NURSING_INCHARGE] }
+      },
+      {
+        path: 'incharge/schedule',
+        loadComponent: () => import('./features/incharge/dept-schedule/dept-schedule.component').then(c => c.DeptScheduleComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Role.NURSING_INCHARGE] }
+      },
+      {
+        path: 'incharge/nurses',
+        loadComponent: () => import('./features/incharge/nurse-directory/nurse-directory.component').then(c => c.NurseDirectoryComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Role.NURSING_INCHARGE] }
+      },
+      {
+        path: 'incharge/create-shift',
+        loadComponent: () => import('./features/incharge/create-shift/create-shift.component').then(c => c.CreateShiftComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Role.NURSING_INCHARGE] }
+      },
+      {
         path: 'duty-officer',
         component: DutyOfficerDashboardComponent,
         canActivate: [roleGuard],

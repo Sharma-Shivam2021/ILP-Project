@@ -171,3 +171,23 @@ export interface RequestHistoryResponseDto {
   remarks: string;
   actedAt: string; // LocalDateTime
 }
+
+export interface InchargeApprovalDto {
+  shiftRequestId: number;
+  approved: boolean;
+  remarks?: string;
+}
+
+export interface AssignShiftDto {
+  nurseId: number;
+  shiftId: number;
+  shiftDate: string; // "YYYY-MM-DD"
+}
+
+export interface CreateShiftDto {
+  shiftName: string;
+  startTime: string; // "HH:mm:ss"
+  endTime: string; // "HH:mm:ss"
+}
+
+
