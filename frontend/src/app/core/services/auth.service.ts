@@ -69,14 +69,38 @@ export class AuthService {
   }
 
   private getUserFromStorage(): User | null {
+    const token = localStorage.getItem('token');
     const userStr = localStorage.getItem('user');
-    if (userStr) {
-      try {
-        return JSON.parse(userStr);
-      } catch (e) {
-        return null;
-      }
+
+    if (!token || !userStr) {
+      return null;
     }
-    return null;
+
+    // Check if the JWT token is expired before trusting the stored session
+    if (this.isTokenExpired(token)) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('firstLogin');
+      return null;
+    }
+
+    try {
+      return JSON.parse(userStr);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /** Decodes the JWT payload and checks if the `exp` claim has passed. */
+  isTokenExpired(token: string): boolean {
+    try {
+      const payloadBase64 = token.split('.')[1];
+      const payload = JSON.parse(atob(payloadBase64));
+      // `exp` is in seconds; Date.now() is in milliseconds
+      return payload.exp * 1000 < Date.now();
+    } catch (e) {
+      // If we can't parse the token, treat it as expired
+      return true;
+    }
   }
 }

@@ -1,0 +1,324 @@
+<div class="landing-wrapper">
+  <!-- Navbar -->
+  <header class="navbar glass-panel">
+    <div class="brand">
+      <mat-icon color="primary" class="brand-logo">local_hospital</mat-icon>
+      <span class="brand-name">HWSCS</span>
+    </div>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#roles">Workflows</a>
+      <a href="#tech">Tech Stack</a>
+    </nav>
+    <div class="nav-actions">
+      <ng-container *ngIf="user; else guestActions">
+        <button mat-raised-button color="primary" (click)="enterPortal()" style="margin-right: 8px;">
+          <mat-icon>dashboard</mat-icon>
+          Go to Dashboard
+        </button>
+        <button mat-stroked-button color="warn" (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+          Logout
+        </button>
+      </ng-container>
+      <ng-template #guestActions>
+        <button mat-raised-button color="primary" (click)="enterPortal()">
+          <mat-icon>login</mat-icon>
+          Login
+        </button>
+      </ng-template>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-container">
+      <div class="hero-text">
+        <div class="badge">Next-Gen Hospital Scheduling</div>
+        <h1>
+          Modern Workforce <br>
+          <span class="gradient-text">Shift Coordination</span>
+        </h1>
+        <p class="hero-description">
+          The Hospital Workforce Shift Coordination System (HWSCS) automates nursing schedules, coordinates peer shift
+          swaps, tracks compliance, and outputs instant live staffing reports. Designed for high-stress medical
+          environments.
+        </p>
+        <div class="hero-actions">
+          <button mat-raised-button color="primary" class="cta-primary hover-lift" (click)="enterPortal()">
+            <mat-icon>{{ user ? 'dashboard' : 'login' }}</mat-icon>
+            {{ user ? 'Go to Dashboard' : 'Login' }}
+          </button>
+          <a href="#features" mat-button class="cta-secondary">
+            <mat-icon>explore</mat-icon>
+            Explore Features
+          </a>
+        </div>
+      </div>
+      <div class="hero-image-container glass-panel">
+        <img src="assets/landing_hero.png" alt="HWSCS Scheduling Dashboard Mockup" class="hero-image">
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Bar -->
+  <section class="stats-bar">
+    <div class="stats-container">
+      <div class="stat-card">
+        <h3>100%</h3>
+        <p>Audit-Ready Logs</p>
+      </div>
+      <div class="stat-card">
+        <h3>&lt; 500ms</h3>
+        <p>Roster Fetch Speed</p>
+      </div>
+      <div class="stat-card">
+        <h3>Zero</h3>
+        <p>Roster Schedule Conflicts</p>
+      </div>
+      <div class="stat-card">
+        <h3>State-of-the-Art</h3>
+        <p>BCrypt & JWT Security</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section id="features" class="features-section">
+    <div class="section-header">
+      <h2>Advanced Features for Medical SaaS</h2>
+      <p>Decoupled standalone scheduling modules designed for speed, security, and absolute reliability.</p>
+    </div>
+    <div class="features-grid">
+      <mat-card class="feature-card hover-lift">
+        <mat-card-header>
+          <div class="feature-icon-wrapper theme-NURSE">
+            <mat-icon>swap_horiz</mat-icon>
+          </div>
+          <mat-card-title>Peer-to-Peer Shift Swaps</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Nurses propose shift swaps directly to qualified peers. Acceptance moves requests to In-Charge queues
+            automatically.</p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="feature-card hover-lift">
+        <mat-card-header>
+          <div class="feature-icon-wrapper theme-NURSING_INCHARGE">
+            <mat-icon>rule</mat-icon>
+          </div>
+          <mat-card-title>Multi-Tier Approvals</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Strict role-based flow enforces department policies, validating schedule criteria before shifts are
+            updated.</p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="feature-card hover-lift">
+        <mat-card-header>
+          <div class="feature-icon-wrapper theme-DUTY_OFFICER">
+            <mat-icon>picture_as_pdf</mat-icon>
+          </div>
+          <mat-card-title>Executive PDF Reports</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Generate multi-page hospital-wide staffing coverage reports on the fly via high-speed client-side
+            rendering.</p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="feature-card hover-lift">
+        <mat-card-header>
+          <div class="feature-icon-wrapper">
+            <mat-icon>security</mat-icon>
+          </div>
+          <mat-card-title>RBAC & Stateless JWT</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Stateless session management secures every REST API endpoint. Mandatory initial login password change is
+            enforced.</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+
+  <!-- Interactive Role Workflows -->
+  <section id="roles" class="roles-section">
+    <div class="section-header">
+      <h2>Role-Based Custom Portals</h2>
+      <p>HWSCS dynamically generates menus and secures pathways matching the exact role of the staff member.</p>
+    </div>
+
+    <mat-tab-group dynamicHeight class="roles-tab-group glass-panel">
+      <!-- Nurse Tab -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>badge</mat-icon>&nbsp;Nurse Portal
+        </ng-template>
+        <div class="tab-content-container">
+          <div class="tab-text">
+            <h3>Empowering Nursing Personnel</h3>
+            <p>Nurses have access to a clean portal focusing on self-service scheduling. It helps reduce burnout and
+              gives flexibility back to the workforce.</p>
+            <ul class="benefit-list">
+              <li><mat-icon color="primary">check_circle</mat-icon> View personalized calendars and assigned rosters.
+              </li>
+              <li><mat-icon color="primary">check_circle</mat-icon> Initiate swaps with department peers.</li>
+              <li><mat-icon color="primary">check_circle</mat-icon> Live alerts for incoming peer proposals.</li>
+              <li><mat-icon color="primary">check_circle</mat-icon> Manage details and security settings easily.</li>
+            </ul>
+          </div>
+          <div class="tab-visual">
+            <div class="mock-widget">
+              <div class="widget-header theme-NURSE">
+                <span>My Shifts (Upcoming)</span>
+              </div>
+              <div class="widget-list">
+                <div class="widget-item">
+                  <div class="item-details">
+                    <strong>Morning Shift (M1)</strong>
+                    <span>Tomorrow • Emergency Room</span>
+                  </div>
+                  <span class="status-badge success">Confirmed</span>
+                </div>
+                <div class="widget-item">
+                  <div class="item-details">
+                    <strong>Night Shift (N2)</strong>
+                    <span>May 28 • ICU Ward</span>
+                  </div>
+                  <span class="status-badge pending">Swap Pending</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Nursing In-Charge Tab -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>assignment_ind</mat-icon>&nbsp;In-Charge Portal
+        </ng-template>
+        <div class="tab-content-container">
+          <div class="tab-text">
+            <h3>Departmental Shift & Roster Management</h3>
+            <p>Mid-level managers oversee their departments, assign available resources, and handle schedule swap
+              approvals.</p>
+            <ul class="benefit-list">
+              <li><mat-icon style="color: #10b981;">check_circle</mat-icon> Oversee department coverage grids.</li>
+              <li><mat-icon style="color: #10b981;">check_circle</mat-icon> Assign open shifts to available staff.</li>
+              <li><mat-icon style="color: #10b981;">check_circle</mat-icon> Review escalated swap requests.</li>
+              <li><mat-icon style="color: #10b981;">check_circle</mat-icon> Avoid duplicate scheduling and fatigue.</li>
+            </ul>
+          </div>
+          <div class="tab-visual">
+            <div class="mock-widget">
+              <div class="widget-header theme-NURSING_INCHARGE">
+                <span>Pending Approvals (ICU)</span>
+              </div>
+              <div class="widget-list">
+                <div class="widget-item">
+                  <div class="item-details">
+                    <strong>Swap Request #1042</strong>
+                    <span>Sarah (M1) ↔ Robert (N1)</span>
+                  </div>
+                  <button mat-flat-button
+                    style="background-color: #10b981; color: white; font-size: 11px; height: 26px; line-height: 26px; padding: 0 10px;">Review</button>
+                </div>
+                <div class="widget-item">
+                  <div class="item-details">
+                    <strong>Shift Assignment</strong>
+                    <span>Jane Assigned to ICU (N2)</span>
+                  </div>
+                  <span class="status-badge success">Assigned</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Duty Officer Tab -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>admin_panel_settings</mat-icon>&nbsp;Duty Officer Portal
+        </ng-template>
+        <div class="tab-content-container">
+          <div class="tab-text">
+            <h3>Hospital-Wide Compliance & Reporting</h3>
+            <p>The Duty Officer holds administrative access to review hospital-wide coverage analytics and compile
+              comprehensive reports.</p>
+            <ul class="benefit-list">
+              <li><mat-icon style="color: #8b5cf6;">check_circle</mat-icon> Live coverage analytics and staffing
+                shortages.</li>
+              <li><mat-icon style="color: #8b5cf6;">check_circle</mat-icon> Export audit-ready hospital PDF reports.
+              </li>
+              <li><mat-icon style="color: #8b5cf6;">check_circle</mat-icon> Universal nurse and staff directory access.
+              </li>
+              <li><mat-icon style="color: #8b5cf6;">check_circle</mat-icon> Monitor compliance metrics hospital-wide.
+              </li>
+            </ul>
+          </div>
+          <div class="tab-visual">
+            <div class="mock-widget">
+              <div class="widget-header theme-DUTY_OFFICER">
+                <span>Executive Analytics</span>
+              </div>
+              <div class="widget-list">
+                <div class="widget-item">
+                  <div class="item-details">
+                    <strong>Hospital-Wide Coverage</strong>
+                    <span>System Aggregate</span>
+                  </div>
+                  <strong style="color: #8b5cf6;">84.3%</strong>
+                </div>
+                <div class="widget-item">
+                  <div class="item-details">
+                    <strong>PDF Audit Export</strong>
+                    <span>All active nurse rosters</span>
+                  </div>
+                  <button mat-icon-button color="primary">
+                    <mat-icon>download</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </section>
+
+  <!-- Technology Stack -->
+  <section id="tech" class="tech-section">
+    <div class="section-header">
+      <h2>Robust Enterprise Architecture</h2>
+      <p>Built with robust and clean frameworks following TCS ILP evaluation specifications.</p>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <h3>Angular 17</h3>
+        <p>Standalone components architecture for optimal bundle size, modular routes, and client-side PDF generation
+          using jsPDF.</p>
+      </div>
+      <div class="tech-card">
+        <h3>Spring Boot</h3>
+        <p>Java MVC REST API providing stateless JWT authentication, password verification, and secure transaction
+          handling.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <mat-icon color="primary">local_hospital</mat-icon>
+        <span>Hospital Workforce Shift Coordination System</span>
+      </div>
+      <p class="footer-copy">© 2026 HWSCS. Designed with Angular Material & Spring Boot.</p>
+    </div>
+  </footer>
+</div>

@@ -4,6 +4,7 @@ import { LoginComponent } from './features/auth/login/login.component';
 import { ChangePasswordComponent } from './features/auth/change-password/change-password.component';
 import { LayoutComponent } from './layout/layout.component';
 import { authGuard } from './core/guards/auth.guard';
+import { LandingComponent } from './features/landing/landing.component';
 import { roleGuard } from './core/guards/role.guard';
 import { NurseDashboardComponent } from './features/dashboard/nurse-dashboard/nurse-dashboard.component';
 import { InchargeDashboardComponent } from './features/dashboard/incharge-dashboard/incharge-dashboard.component';
@@ -32,6 +33,7 @@ const roleRedirectGuard: CanActivateFn = () => {
 };
 
 export const routes: Routes = [
+  { path: '', component: LandingComponent, pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'change-password', component: ChangePasswordComponent, canActivate: [authGuard] },
   {
@@ -127,5 +129,5 @@ export const routes: Routes = [
       { path: '', canActivate: [roleRedirectGuard], children: [] }
     ]
   },
-  { path: '**', redirectTo: 'login' }
+  { path: '**', redirectTo: '' }
 ];
