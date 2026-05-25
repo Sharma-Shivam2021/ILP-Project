@@ -49,7 +49,8 @@ export class ShiftRequestsComponent implements OnInit {
   constructor() {
     this.swapForm = this.fb.group({
       selectedShiftId: [null, Validators.required],
-      searchQuery: ['']
+      searchQuery: [''],
+      remarks: ['']
     });
 
     // When a shift is selected, load eligible peers
@@ -113,7 +114,13 @@ export class ShiftRequestsComponent implements OnInit {
     }
     const lowerQuery = query.toLowerCase();
     this.filteredPeers = this.eligiblePeers.filter(p =>
-      p.nurseName.toLowerCase().includes(lowerQuery)
+      (p.nurseName && p.nurseName.toLowerCase().includes(lowerQuery)) ||
+      (p.shiftName && p.shiftName.toLowerCase().includes(lowerQuery)) ||
+      (p.employeeCode && p.employeeCode.toLowerCase().includes(lowerQuery)) ||
+      (p.contactEmail && p.contactEmail.toLowerCase().includes(lowerQuery)) ||
+      (p.contactPhone && p.contactPhone.toLowerCase().includes(lowerQuery)) ||
+      (p.departmentName && p.departmentName.toLowerCase().includes(lowerQuery)) ||
+      (p.nurseType && p.nurseType.toLowerCase().includes(lowerQuery))
     );
   }
 
@@ -121,10 +128,12 @@ export class ShiftRequestsComponent implements OnInit {
     const shiftId = this.swapForm.get('selectedShiftId')?.value;
     if (!shiftId) return;
 
+    const remarks = this.swapForm.get('remarks')?.value || '';
+
     this.shiftRequestService.createRequest({
       requesterShiftId: shiftId,
       peerShiftId: peer.nurseShiftId,
-      remarks: 'Shift swap request from nurse dashboard'
+      remarks: remarks || 'Shift swap request from nurse dashboard'
     }).subscribe({
       next: () => {
         this.snackBar.open('Swap request sent successfully!', 'Close', { duration: 3000 });

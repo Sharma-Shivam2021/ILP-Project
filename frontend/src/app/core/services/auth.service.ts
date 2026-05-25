@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { LoginRequestDto, LoginResponseDto, User } from '../models/models';
+import { LoginRequestDto, LoginResponseDto, User, RegisterRequestDto, DepartmentResponse } from '../models/models';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -35,7 +35,7 @@ export class AuthService {
           const userObj: User = {
             id: response.userId,
             email: response.username,
-            name: response.username,
+            name: response.fullName || response.username,
             role: response.role
           };
           localStorage.setItem('token', response.token);
@@ -50,6 +50,14 @@ export class AuthService {
         }
       })
     );
+  }
+
+  register(userData: RegisterRequestDto): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/register`, userData);
+  }
+
+  getDepartments(): Observable<DepartmentResponse[]> {
+    return this.http.get<DepartmentResponse[]>('/api/departments');
   }
 
   clearFirstLogin() {

@@ -11,11 +11,5 @@ export const authGuard: CanActivateFn = (route, state) => {
     return false;
   }
 
-  // If user must change password, only allow /change-password
-  if (authService.isFirstLogin && state.url !== '/change-password') {
-    router.navigate(['/change-password']);
-    return false;
-  }
-
   return true;
 };

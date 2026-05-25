@@ -65,6 +65,25 @@
           <mat-icon matListItemIcon>badge</mat-icon>
           <div matListItemTitle>Nurses</div>
         </a>
+        <a mat-list-item routerLink="/duty-officer/weekly-report" routerLinkActive="active-link">
+          <mat-icon matListItemIcon>assessment</mat-icon>
+          <div matListItemTitle>Weekly Report</div>
+        </a>
+      </ng-container>
+
+      <ng-container *ngIf="user?.role === 'ADMIN'">
+        <a mat-list-item routerLink="/admin/users" routerLinkActive="active-link">
+          <mat-icon matListItemIcon>people</mat-icon>
+          <div matListItemTitle>Users</div>
+        </a>
+        <a mat-list-item routerLink="/admin/departments" routerLinkActive="active-link">
+          <mat-icon matListItemIcon>business</mat-icon>
+          <div matListItemTitle>Departments</div>
+        </a>
+        <a mat-list-item routerLink="/admin/audit-logs" routerLinkActive="active-link">
+          <mat-icon matListItemIcon>receipt_long</mat-icon>
+          <div matListItemTitle>Audit Logs</div>
+        </a>
       </ng-container>
     </mat-nav-list>
 
@@ -93,6 +112,10 @@
       
       <!-- Material menu needs MatMenuModule, but we can just logout directly for now or add menu -->
       <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="/change-password">
+          <mat-icon>password</mat-icon>
+          <span>Change Password</span>
+        </button>
         <button mat-menu-item (click)="logout()">
           <mat-icon>exit_to_app</mat-icon>
           <span>Logout</span>

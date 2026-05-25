@@ -36,9 +36,10 @@ export class NurseProfileComponent implements OnInit {
   loading = false;
 
   constructor() {
+    const INDIAN_PHONE_PATTERN = '^[6-9]\\d{9}$';
     this.profileForm = this.fb.group({
       fullName: ['', Validators.required],
-      contactPhone: ['', Validators.required],
+      contactPhone: ['', [Validators.required, Validators.pattern(INDIAN_PHONE_PATTERN)]],
       contactEmail: ['', [Validators.required, Validators.email]]
     });
   }
@@ -85,5 +86,12 @@ export class NurseProfileComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  onPhoneInput(event: any) {
+    const input = event.target as HTMLInputElement;
+    const value = input.value.replace(/[^0-9]/g, '');
+    this.profileForm.get('contactPhone')?.setValue(value, { emitEvent: false });
+    input.value = value;
   }
 }

@@ -22,4 +22,8 @@ export class NurseService {
   getNursesByDepartment(departmentId: number): Observable<NurseResponseDto[]> {
     return this.http.get<NurseResponseDto[]>(`${this.apiUrl}/department/${departmentId}`);
   }
+
+  toggleShiftChangePermission(nurseId: number, allow: boolean): Observable<NurseResponseDto> {
+    return this.http.put<NurseResponseDto>(`${this.apiUrl}/${nurseId}/allow-shift-change?allow=${allow}`, {});
+  }
 }

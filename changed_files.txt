@@ -1,0 +1,148 @@
+﻿R100	.mvn/wrapper/maven-wrapper.properties	backend/.mvn/wrapper/maven-wrapper.properties
+R100	mvnw	backend/mvnw
+R100	mvnw.cmd	backend/mvnw.cmd
+R100	pom.xml	backend/pom.xml
+R100	src/main/java/com/hwscs/backend/BackendApplication.java	backend/src/main/java/com/hwscs/backend/BackendApplication.java
+R078	src/main/java/com/hwscs/backend/config/DataLoader.java	backend/src/main/java/com/hwscs/backend/config/DataLoader.java
+R096	src/main/java/com/hwscs/backend/config/SecurityConfig.java	backend/src/main/java/com/hwscs/backend/config/SecurityConfig.java
+R100	src/main/java/com/hwscs/backend/config/SwaggerConfig.java	backend/src/main/java/com/hwscs/backend/config/SwaggerConfig.java
+R100	src/main/java/com/hwscs/backend/config/WebConfig.java	backend/src/main/java/com/hwscs/backend/config/WebConfig.java
+A	backend/src/main/java/com/hwscs/backend/controller/AdminController.java
+R065	src/main/java/com/hwscs/backend/controller/AuthController.java	backend/src/main/java/com/hwscs/backend/controller/AuthController.java
+R100	src/main/java/com/hwscs/backend/controller/DashboardController.java	backend/src/main/java/com/hwscs/backend/controller/DashboardController.java
+A	backend/src/main/java/com/hwscs/backend/controller/DepartmentController.java
+R083	src/main/java/com/hwscs/backend/controller/DutyOfficerController.java	backend/src/main/java/com/hwscs/backend/controller/DutyOfficerController.java
+R078	src/main/java/com/hwscs/backend/controller/NurseController.java	backend/src/main/java/com/hwscs/backend/controller/NurseController.java
+R100	src/main/java/com/hwscs/backend/controller/ProfileController.java	backend/src/main/java/com/hwscs/backend/controller/ProfileController.java
+R100	src/main/java/com/hwscs/backend/controller/ShiftController.java	backend/src/main/java/com/hwscs/backend/controller/ShiftController.java
+R100	src/main/java/com/hwscs/backend/controller/ShiftRequestController.java	backend/src/main/java/com/hwscs/backend/controller/ShiftRequestController.java
+R100	src/main/java/com/hwscs/backend/dto/requests/AssignShiftDto.java	backend/src/main/java/com/hwscs/backend/dto/requests/AssignShiftDto.java
+R094	src/main/java/com/hwscs/backend/dto/requests/ChangePasswordDto.java	backend/src/main/java/com/hwscs/backend/dto/requests/ChangePasswordDto.java
+R100	src/main/java/com/hwscs/backend/dto/requests/CreateShiftDto.java	backend/src/main/java/com/hwscs/backend/dto/requests/CreateShiftDto.java
+R100	src/main/java/com/hwscs/backend/dto/requests/CreateShiftRequestDto.java	backend/src/main/java/com/hwscs/backend/dto/requests/CreateShiftRequestDto.java
+R100	src/main/java/com/hwscs/backend/dto/requests/InchargeApprovalDto.java	backend/src/main/java/com/hwscs/backend/dto/requests/InchargeApprovalDto.java
+R095	src/main/java/com/hwscs/backend/dto/requests/LoginRequestDto.java	backend/src/main/java/com/hwscs/backend/dto/requests/LoginRequestDto.java
+A	backend/src/main/java/com/hwscs/backend/dto/requests/RegisterRequestDto.java
+R087	src/main/java/com/hwscs/backend/dto/requests/UpdateProfileDto.java	backend/src/main/java/com/hwscs/backend/dto/requests/UpdateProfileDto.java
+A	backend/src/main/java/com/hwscs/backend/dto/response/AdminUserResponseDto.java
+A	backend/src/main/java/com/hwscs/backend/dto/response/DailyAssignmentDto.java
+R100	src/main/java/com/hwscs/backend/dto/response/DepartmentStaffingDto.java	backend/src/main/java/com/hwscs/backend/dto/response/DepartmentStaffingDto.java
+R100	src/main/java/com/hwscs/backend/dto/response/DutyOfficerDashboardDto.java	backend/src/main/java/com/hwscs/backend/dto/response/DutyOfficerDashboardDto.java
+A	backend/src/main/java/com/hwscs/backend/dto/response/EligiblePeerDto.java
+R100	src/main/java/com/hwscs/backend/dto/response/InchargeDashboardDto.java	backend/src/main/java/com/hwscs/backend/dto/response/InchargeDashboardDto.java
+R087	src/main/java/com/hwscs/backend/dto/response/LoginResponseDto.java	backend/src/main/java/com/hwscs/backend/dto/response/LoginResponseDto.java
+R100	src/main/java/com/hwscs/backend/dto/response/NurseDashboardDto.java	backend/src/main/java/com/hwscs/backend/dto/response/NurseDashboardDto.java
+A	backend/src/main/java/com/hwscs/backend/dto/response/NurseResponseDto.java
+R100	src/main/java/com/hwscs/backend/dto/response/NurseShiftResponseDto.java	backend/src/main/java/com/hwscs/backend/dto/response/NurseShiftResponseDto.java
+A	backend/src/main/java/com/hwscs/backend/dto/response/NurseWeeklyReportDto.java
+R100	src/main/java/com/hwscs/backend/dto/response/PeerResponseDto.java	backend/src/main/java/com/hwscs/backend/dto/response/PeerResponseDto.java
+R100	src/main/java/com/hwscs/backend/dto/response/RequestHistoryResponseDto.java	backend/src/main/java/com/hwscs/backend/dto/response/RequestHistoryResponseDto.java
+R096	src/main/java/com/hwscs/backend/dto/response/ShiftRequestResponseDto.java	backend/src/main/java/com/hwscs/backend/dto/response/ShiftRequestResponseDto.java
+R100	src/main/java/com/hwscs/backend/dto/response/ShiftResponseDto.java	backend/src/main/java/com/hwscs/backend/dto/response/ShiftResponseDto.java
+A	backend/src/main/java/com/hwscs/backend/dto/response/WeeklyReportDto.java
+A	backend/src/main/java/com/hwscs/backend/entity/Admin.java
+A	backend/src/main/java/com/hwscs/backend/entity/AuditLog.java
+R100	src/main/java/com/hwscs/backend/entity/Department.java	backend/src/main/java/com/hwscs/backend/entity/Department.java
+R100	src/main/java/com/hwscs/backend/entity/DutyOfficer.java	backend/src/main/java/com/hwscs/backend/entity/DutyOfficer.java
+R086	src/main/java/com/hwscs/backend/entity/Nurse.java	backend/src/main/java/com/hwscs/backend/entity/Nurse.java
+R100	src/main/java/com/hwscs/backend/entity/NurseShift.java	backend/src/main/java/com/hwscs/backend/entity/NurseShift.java
+R100	src/main/java/com/hwscs/backend/entity/NursingIncharge.java	backend/src/main/java/com/hwscs/backend/entity/NursingIncharge.java
+R100	src/main/java/com/hwscs/backend/entity/RequestHistory.java	backend/src/main/java/com/hwscs/backend/entity/RequestHistory.java
+R100	src/main/java/com/hwscs/backend/entity/Shift.java	backend/src/main/java/com/hwscs/backend/entity/Shift.java
+R100	src/main/java/com/hwscs/backend/entity/ShiftRequest.java	backend/src/main/java/com/hwscs/backend/entity/ShiftRequest.java
+R100	src/main/java/com/hwscs/backend/entity/User.java	backend/src/main/java/com/hwscs/backend/entity/User.java
+R100	src/main/java/com/hwscs/backend/enums/NurseType.java	backend/src/main/java/com/hwscs/backend/enums/NurseType.java
+R100	src/main/java/com/hwscs/backend/enums/RequestAction.java	backend/src/main/java/com/hwscs/backend/enums/RequestAction.java
+R100	src/main/java/com/hwscs/backend/enums/RequestStatus.java	backend/src/main/java/com/hwscs/backend/enums/RequestStatus.java
+R100	src/main/java/com/hwscs/backend/enums/Role.java	backend/src/main/java/com/hwscs/backend/enums/Role.java
+R100	src/main/java/com/hwscs/backend/exception/GlobalExceptionHandler.java	backend/src/main/java/com/hwscs/backend/exception/GlobalExceptionHandler.java
+R100	src/main/java/com/hwscs/backend/exception/InvalidRequestException.java	backend/src/main/java/com/hwscs/backend/exception/InvalidRequestException.java
+R100	src/main/java/com/hwscs/backend/exception/ResourceNotFoundException.java	backend/src/main/java/com/hwscs/backend/exception/ResourceNotFoundException.java
+R100	src/main/java/com/hwscs/backend/exception/UnauthorizedActionException.java	backend/src/main/java/com/hwscs/backend/exception/UnauthorizedActionException.java
+R100	src/main/java/com/hwscs/backend/logger/aspect/LoggingAspect.java	backend/src/main/java/com/hwscs/backend/logger/aspect/LoggingAspect.java
+R100	src/main/java/com/hwscs/backend/logger/interceptor/ApiLoggingInterceptor.java	backend/src/main/java/com/hwscs/backend/logger/interceptor/ApiLoggingInterceptor.java
+A	backend/src/main/java/com/hwscs/backend/repository/AdminRepository.java
+A	backend/src/main/java/com/hwscs/backend/repository/AuditLogRepository.java
+R100	src/main/java/com/hwscs/backend/repository/DepartmentRepository.java	backend/src/main/java/com/hwscs/backend/repository/DepartmentRepository.java
+R065	src/main/java/com/hwscs/backend/repository/DutyOfficerRepository.java	backend/src/main/java/com/hwscs/backend/repository/DutyOfficerRepository.java
+R081	src/main/java/com/hwscs/backend/repository/NurseRepository.java	backend/src/main/java/com/hwscs/backend/repository/NurseRepository.java
+R100	src/main/java/com/hwscs/backend/repository/NurseShiftRepository.java	backend/src/main/java/com/hwscs/backend/repository/NurseShiftRepository.java
+R070	src/main/java/com/hwscs/backend/repository/NursingInchargeRepository.java	backend/src/main/java/com/hwscs/backend/repository/NursingInchargeRepository.java
+R100	src/main/java/com/hwscs/backend/repository/RequestHistoryRepository.java	backend/src/main/java/com/hwscs/backend/repository/RequestHistoryRepository.java
+R100	src/main/java/com/hwscs/backend/repository/ShiftRepository.java	backend/src/main/java/com/hwscs/backend/repository/ShiftRepository.java
+R100	src/main/java/com/hwscs/backend/repository/ShiftRequestRepository.java	backend/src/main/java/com/hwscs/backend/repository/ShiftRequestRepository.java
+R100	src/main/java/com/hwscs/backend/repository/UserRepository.java	backend/src/main/java/com/hwscs/backend/repository/UserRepository.java
+R088	src/main/java/com/hwscs/backend/security/JwtAuthFilter.java	backend/src/main/java/com/hwscs/backend/security/JwtAuthFilter.java
+R100	src/main/java/com/hwscs/backend/security/JwtAuthenticationEntryPoint.java	backend/src/main/java/com/hwscs/backend/security/JwtAuthenticationEntryPoint.java
+R100	src/main/java/com/hwscs/backend/security/UserDetailsServiceImpl.java	backend/src/main/java/com/hwscs/backend/security/UserDetailsServiceImpl.java
+A	backend/src/main/java/com/hwscs/backend/service/impl/AdminServiceImpl.java
+A	backend/src/main/java/com/hwscs/backend/service/impl/AuthServiceImpl.java
+R100	src/main/java/com/hwscs/backend/service/impl/DashboardServiceImpl.java	backend/src/main/java/com/hwscs/backend/service/impl/DashboardServiceImpl.java
+A	backend/src/main/java/com/hwscs/backend/service/impl/DutyOfficerServiceImpl.java
+R100	src/main/java/com/hwscs/backend/service/impl/LoginAttempServiceImpl.java	backend/src/main/java/com/hwscs/backend/service/impl/LoginAttempServiceImpl.java
+R061	src/main/java/com/hwscs/backend/service/impl/NurseServiceImpl.java	backend/src/main/java/com/hwscs/backend/service/impl/NurseServiceImpl.java
+R076	src/main/java/com/hwscs/backend/service/impl/ProfileServiceImpl.java	backend/src/main/java/com/hwscs/backend/service/impl/ProfileServiceImpl.java
+R077	src/main/java/com/hwscs/backend/service/impl/ShiftRequestServiceImpl.java	backend/src/main/java/com/hwscs/backend/service/impl/ShiftRequestServiceImpl.java
+R100	src/main/java/com/hwscs/backend/service/impl/ShiftServiceImpl.java	backend/src/main/java/com/hwscs/backend/service/impl/ShiftServiceImpl.java
+A	backend/src/main/java/com/hwscs/backend/service/interfaces/AdminService.java
+R070	src/main/java/com/hwscs/backend/service/interfaces/AuthService.java	backend/src/main/java/com/hwscs/backend/service/interfaces/AuthService.java
+R100	src/main/java/com/hwscs/backend/service/interfaces/DashboardService.java	backend/src/main/java/com/hwscs/backend/service/interfaces/DashboardService.java
+R080	src/main/java/com/hwscs/backend/service/interfaces/DutyOfficerService.java	backend/src/main/java/com/hwscs/backend/service/interfaces/DutyOfficerService.java
+R100	src/main/java/com/hwscs/backend/service/interfaces/LoginAttemptService.java	backend/src/main/java/com/hwscs/backend/service/interfaces/LoginAttemptService.java
+R078	src/main/java/com/hwscs/backend/service/interfaces/NurseService.java	backend/src/main/java/com/hwscs/backend/service/interfaces/NurseService.java
+R100	src/main/java/com/hwscs/backend/service/interfaces/ProfileService.java	backend/src/main/java/com/hwscs/backend/service/interfaces/ProfileService.java
+R100	src/main/java/com/hwscs/backend/service/interfaces/ShiftRequestService.java	backend/src/main/java/com/hwscs/backend/service/interfaces/ShiftRequestService.java
+R100	src/main/java/com/hwscs/backend/service/interfaces/ShiftService.java	backend/src/main/java/com/hwscs/backend/service/interfaces/ShiftService.java
+R100	src/main/java/com/hwscs/backend/util/JwtUtil.java	backend/src/main/java/com/hwscs/backend/util/JwtUtil.java
+R100	src/main/resources/application.properties	backend/src/main/resources/application.properties
+R100	src/test/java/com/hwscs/backend/BackendApplicationTests.java	backend/src/test/java/com/hwscs/backend/BackendApplicationTests.java
+A	docs/diagrams.md
+A	docs/implementation_plan.md
+A	docs/task.md
+A	docs/walkthrough.md
+M	frontend/src/app/app.routes.ts
+M	frontend/src/app/core/guards/auth.guard.ts
+M	frontend/src/app/core/models/models.ts
+A	frontend/src/app/core/services/admin.service.ts
+M	frontend/src/app/core/services/auth.service.ts
+M	frontend/src/app/core/services/duty-officer.service.ts
+M	frontend/src/app/core/services/nurse.service.ts
+A	frontend/src/app/features/admin/admin-dashboard/admin-dashboard.component.css
+A	frontend/src/app/features/admin/admin-dashboard/admin-dashboard.component.html
+A	frontend/src/app/features/admin/admin-dashboard/admin-dashboard.component.ts
+A	frontend/src/app/features/admin/audit-logs/audit-logs.component.css
+A	frontend/src/app/features/admin/audit-logs/audit-logs.component.html
+A	frontend/src/app/features/admin/audit-logs/audit-logs.component.ts
+A	frontend/src/app/features/admin/dept-management/dept-management.component.css
+A	frontend/src/app/features/admin/dept-management/dept-management.component.html
+A	frontend/src/app/features/admin/dept-management/dept-management.component.ts
+A	frontend/src/app/features/admin/user-management/user-management.component.css
+A	frontend/src/app/features/admin/user-management/user-management.component.html
+A	frontend/src/app/features/admin/user-management/user-management.component.ts
+M	frontend/src/app/features/auth/change-password/change-password.component.ts
+M	frontend/src/app/features/auth/login/login.component.html
+M	frontend/src/app/features/auth/login/login.component.ts
+A	frontend/src/app/features/auth/register/register.component.css
+A	frontend/src/app/features/auth/register/register.component.html
+A	frontend/src/app/features/auth/register/register.component.ts
+M	frontend/src/app/features/duty-officer/do-nurses/do-nurses.component.ts
+A	frontend/src/app/features/duty-officer/weekly-report/weekly-report.component.css
+A	frontend/src/app/features/duty-officer/weekly-report/weekly-report.component.html
+A	frontend/src/app/features/duty-officer/weekly-report/weekly-report.component.ts
+M	frontend/src/app/features/incharge/nurse-directory/nurse-directory.component.html
+M	frontend/src/app/features/incharge/nurse-directory/nurse-directory.component.ts
+M	frontend/src/app/features/landing/landing.component.html
+M	frontend/src/app/features/landing/landing.component.ts
+M	frontend/src/app/features/nurse/nurse-profile/nurse-profile.component.html
+M	frontend/src/app/features/nurse/nurse-profile/nurse-profile.component.ts
+M	frontend/src/app/features/nurse/shift-requests/shift-requests.component.css
+M	frontend/src/app/features/nurse/shift-requests/shift-requests.component.html
+M	frontend/src/app/features/nurse/shift-requests/shift-requests.component.ts
+M	frontend/src/app/layout/layout.component.html
+M	frontend/src/app/layout/layout.component.ts
+A	grep.exe.stackdump
+M	logs/application.log
+D	src/main/java/com/hwscs/backend/dto/response/EligiblePeerDto.java
+D	src/main/java/com/hwscs/backend/dto/response/NurseResponseDto.java
+D	src/main/java/com/hwscs/backend/service/impl/AuthServiceImpl.java
+D	src/main/java/com/hwscs/backend/service/impl/DutyOfficerServiceImpl.java

@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../../core/services/auth.service';
 
-const PASSWORD_PATTERN = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{13,}$';
+const PASSWORD_PATTERN = '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{8,}$';
 
 @Component({
   selector: 'app-login',
@@ -42,9 +42,9 @@ export class LoginComponent {
       ]]
     });
     
-    // Redirect if already logged in AND not a first-login user
+    // Redirect if already logged in
     const user = this.authService.currentUserValue;
-    if (user && !this.authService.isFirstLogin) {
+    if (user) {
       this.redirectBasedOnRole(user.role);
     }
   }
@@ -60,25 +60,10 @@ export class LoginComponent {
     this.authService.login(this.loginForm.value).subscribe({
       next: (res) => {
         console.log('Login success, response:', res);
-
-        // If firstLogin is true, redirect to change-password
-        if (res.firstLogin) {
-          this.router.navigate(['/change-password'], {
-            state: { firstLogin: true, username: res.username }
-          });
-          return;
-        }
-
         this.redirectBasedOnRole(res.role);
       },
       error: (err) => {
         console.error('Login error:', err);
-        if (err?.status === 403) {
-          this.router.navigate(['/change-password'], {
-            state: { firstLogin: true, username: this.loginForm.value.username }
-          });
-          return;
-        }
         this.error = err?.error?.message || 'Invalid credentials or server error';
         this.loading = false;
       }
@@ -95,6 +80,9 @@ export class LoginComponent {
         break;
       case 'DUTY_OFFICER':
         this.router.navigate(['/duty-officer']);
+        break;
+      case 'ADMIN':
+        this.router.navigate(['/admin']);
         break;
       default:
         this.router.navigate(['/']);

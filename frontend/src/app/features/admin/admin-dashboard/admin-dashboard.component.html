@@ -1,0 +1,73 @@
+<div class="dashboard-wrapper">
+  <div class="welcome-header">
+    <h1>System Administration Dashboard</h1>
+    <p>Monitor system health, audit logs, coordinate users, and configure department settings.</p>
+  </div>
+
+  <div *ngIf="loading" class="spinner-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading administration data...</p>
+  </div>
+
+  <ng-container *ngIf="!loading && stats">
+    <!-- Stats Cards Grid -->
+    <div class="stats-grid">
+      <mat-card class="stat-card glass-panel">
+        <mat-card-header>
+          <div class="stat-icon-container users-icon">
+            <mat-icon>people</mat-icon>
+          </div>
+          <mat-card-title>{{ stats.totalUsers }}</mat-card-title>
+          <mat-card-subtitle>Total System Users</mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
+
+      <mat-card class="stat-card glass-panel">
+        <mat-card-header>
+          <div class="stat-icon-container depts-icon">
+            <mat-icon>business</mat-icon>
+          </div>
+          <mat-card-title>{{ stats.totalDepartments }}</mat-card-title>
+          <mat-card-subtitle>Active Departments</mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
+
+      <mat-card class="stat-card glass-panel">
+        <mat-card-header>
+          <div class="stat-icon-container logs-icon">
+            <mat-icon>receipt_long</mat-icon>
+          </div>
+          <mat-card-title>{{ stats.totalAuditLogs }}</mat-card-title>
+          <mat-card-subtitle>Security Audit Logs</mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
+    </div>
+
+    <!-- Quick Navigation Panel -->
+    <div class="navigation-panel glass-panel">
+      <h2>Administrative Controls</h2>
+      <div class="nav-grid">
+        <mat-card class="nav-card hover-lift" routerLink="/admin/users">
+          <mat-icon color="primary">manage_accounts</mat-icon>
+          <h3>User Management</h3>
+          <p>Create, update, delete, or reset passwords for system users.</p>
+          <button mat-stroked-button color="primary">Manage Users</button>
+        </mat-card>
+
+        <mat-card class="nav-card hover-lift" routerLink="/admin/departments">
+          <mat-icon color="primary">corporate_fare</mat-icon>
+          <h3>Department Settings</h3>
+          <p>Add new departments, update locations, or view active assignments.</p>
+          <button mat-stroked-button color="primary">Manage Depts</button>
+        </mat-card>
+
+        <mat-card class="nav-card hover-lift" routerLink="/admin/audit-logs">
+          <mat-icon color="primary">verified_user</mat-icon>
+          <h3>Audit Logging</h3>
+          <p>Inspect timestamps and logs for security alerts and status changes.</p>
+          <button mat-stroked-button color="primary">View Audit Logs</button>
+        </mat-card>
+      </div>
+    </div>
+  </ng-container>
+</div>

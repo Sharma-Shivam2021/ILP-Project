@@ -27,6 +27,7 @@ const roleRedirectGuard: CanActivateFn = () => {
     case Role.NURSE: router.navigate(['/nurse']); break;
     case Role.NURSING_INCHARGE: router.navigate(['/incharge']); break;
     case Role.DUTY_OFFICER: router.navigate(['/duty-officer']); break;
+    case Role.ADMIN: router.navigate(['/admin']); break;
     default: router.navigate(['/login']);
   }
   return false; // always redirect, never render the empty route itself
@@ -125,9 +126,40 @@ export const routes: Routes = [
         canActivate: [roleGuard],
         data: { roles: [Role.DUTY_OFFICER] }
       },
+      {
+        path: 'duty-officer/weekly-report',
+        loadComponent: () => import('./features/duty-officer/weekly-report/weekly-report.component').then(c => c.WeeklyReportComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Role.DUTY_OFFICER] }
+      },
+      {
+        path: 'admin',
+        loadComponent: () => import('./features/admin/admin-dashboard/admin-dashboard.component').then(c => c.AdminDashboardComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Role.ADMIN] }
+      },
+      {
+        path: 'admin/users',
+        loadComponent: () => import('./features/admin/user-management/user-management.component').then(c => c.UserManagementComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Role.ADMIN] }
+      },
+      {
+        path: 'admin/departments',
+        loadComponent: () => import('./features/admin/dept-management/dept-management.component').then(c => c.DeptManagementComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Role.ADMIN] }
+      },
+      {
+        path: 'admin/audit-logs',
+        loadComponent: () => import('./features/admin/audit-logs/audit-logs.component').then(c => c.AuditLogsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Role.ADMIN] }
+      },
       // Root path inside layout: redirect to role-specific dashboard or /login
       { path: '', canActivate: [roleRedirectGuard], children: [] }
     ]
   },
+  { path: 'register', loadComponent: () => import('./features/auth/register/register.component').then(c => c.RegisterComponent) },
   { path: '**', redirectTo: '' }
 ];

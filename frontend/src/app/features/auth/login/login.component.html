@@ -25,7 +25,7 @@
           <mat-icon matSuffix>lock</mat-icon>
           <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Password is required</mat-error>
           <mat-error *ngIf="loginForm.get('password')?.hasError('pattern')">
-            Must be at least 13 chars with uppercase, lowercase, number, & special char
+            Must be at least 8 chars with uppercase, lowercase, number, & special char
           </mat-error>
         </mat-form-field>
 
@@ -35,6 +35,10 @@
           </button>
         </div>
       </form>
+      <div class="register-link-container" style="text-align: center; margin-top: 16px;">
+        <span style="font-size: 13px; color: rgba(0,0,0,0.6);">Don't have an account? </span>
+        <a href="/register" style="font-size: 13px; font-weight: 500; color: #3f51b5; text-decoration: none;">Register here</a>
+      </div>
     </mat-card-content>
   </mat-card>
 </div>

@@ -27,6 +27,12 @@
             <mat-icon matPrefix>search</mat-icon>
           </mat-form-field>
 
+          <!-- Reason / Remarks -->
+          <mat-form-field appearance="outline" class="full-width" *ngIf="swapForm.get('selectedShiftId')?.value">
+            <mat-label>Reason / Remarks for Swap</mat-label>
+            <textarea matInput formControlName="remarks" placeholder="Enter reason for swap request..."></textarea>
+          </mat-form-field>
+
           <!-- Available Peers List -->
           <div class="peers-list" *ngIf="swapForm.get('selectedShiftId')?.value">
             <h3>Available Peers</h3>
@@ -75,6 +81,11 @@
                 </div>
               </div>
 
+              <!-- Requester's original remarks -->
+              <div class="initiator-remarks" *ngIf="req.remarks">
+                <strong>Your Remarks:</strong> "{{ req.remarks }}"
+              </div>
+
               <!-- Timeline Stepper Visual -->
               <div class="timeline">
                 <!-- Step 1: You -->
@@ -82,16 +93,16 @@
                   <div class="dot"></div>
                   <div class="label">You</div>
                 </div>
-                <div class="line" [class.completed]="req.status !== 'CANCELLED' && req.status !== 'REJECTED'"></div>
+                <div class="line" [class.completed]="req.status !== 'CANCELLED'"></div>
                 
                 <!-- Step 2: Peer -->
                 <div class="timeline-step" 
-                     [class.completed]="req.status === 'PENDING_INCHARGE' || req.status === 'APPROVED'"
-                     [class.rejected]="req.status === 'REJECTED'">
+                     [class.completed]="req.status === 'PEER_ACCEPTED' || req.status === 'PENDING_INCHARGE' || req.status === 'APPROVED' || req.status === 'REJECTED'"
+                     [class.rejected]="req.status === 'PEER_REJECTED'">
                   <div class="dot"></div>
                   <div class="label">Peer</div>
                 </div>
-                <div class="line" [class.completed]="req.status === 'APPROVED'"></div>
+                <div class="line" [class.completed]="req.status === 'APPROVED' || req.status === 'REJECTED'"></div>
                 
                 <!-- Step 3: In-charge -->
                 <div class="timeline-step" 
@@ -103,11 +114,21 @@
               </div>
               <p class="timeline-subtext">
                 <span *ngIf="req.status === 'PENDING_PEER'">Waiting for peer response...</span>
-                <span *ngIf="req.status === 'PENDING_INCHARGE'">Peer accepted, waiting for In-charge approval...</span>
+                <span *ngIf="req.status === 'PENDING_INCHARGE' || req.status === 'PEER_ACCEPTED'">Peer accepted, waiting for In-charge approval...</span>
                 <span *ngIf="req.status === 'APPROVED'">Swap approved!</span>
                 <span *ngIf="req.status === 'REJECTED'">Swap was rejected.</span>
+                <span *ngIf="req.status === 'PEER_REJECTED'">Peer rejected this request.</span>
                 <span *ngIf="req.status === 'CANCELLED'">You cancelled this request.</span>
               </p>
+
+              <!-- Rejection/Cancellation Reason -->
+              <div class="reason-box" [class.cancellation]="req.status === 'CANCELLED'" *ngIf="req.status === 'REJECTED' || req.status === 'PEER_REJECTED' || req.status === 'CANCELLED'">
+                <span class="reason-title">
+                  <mat-icon>info</mat-icon>
+                  {{ req.status === 'CANCELLED' ? 'Cancellation Reason' : 'Rejection Reason' }}:
+                </span>
+                <p class="reason-content">"{{ req.rejectionReason || 'No reason provided.' }}"</p>
+              </div>
 
               <!-- Actions for Requester -->
               <div class="incoming-actions" *ngIf="req.status === 'PENDING_PEER' || req.status === 'PENDING_INCHARGE'">
@@ -148,6 +169,11 @@
                 </div>
               </div>
 
+              <!-- Requester's original remarks -->
+              <div class="initiator-remarks" *ngIf="req.remarks">
+                <strong>Nurse's Remarks:</strong> "{{ req.remarks }}"
+              </div>
+
               <!-- Actions for Peer -->
               <div class="incoming-actions" *ngIf="req.status === 'PENDING_PEER'">
                 <button mat-flat-button color="primary" class="accept-btn" (click)="respondToRequest(req.id, true)">
@@ -159,10 +185,21 @@
               </div>
 
               <p class="timeline-subtext" *ngIf="req.status !== 'PENDING_PEER'">
-                <span *ngIf="req.status === 'PENDING_INCHARGE'">You accepted! Waiting for In-charge approval...</span>
+                <span *ngIf="req.status === 'PENDING_INCHARGE' || req.status === 'PEER_ACCEPTED'">You accepted! Waiting for In-charge approval...</span>
                 <span *ngIf="req.status === 'APPROVED'">Approved & completed!</span>
-                <span *ngIf="req.status === 'REJECTED'">Rejected.</span>
+                <span *ngIf="req.status === 'REJECTED'">Rejected by In-charge.</span>
+                <span *ngIf="req.status === 'PEER_REJECTED'">You rejected this request.</span>
+                <span *ngIf="req.status === 'CANCELLED'">Request was cancelled by requester.</span>
               </p>
+
+              <!-- Rejection/Cancellation Reason -->
+              <div class="reason-box" [class.cancellation]="req.status === 'CANCELLED'" *ngIf="req.status === 'REJECTED' || req.status === 'PEER_REJECTED' || req.status === 'CANCELLED'">
+                <span class="reason-title">
+                  <mat-icon>info</mat-icon>
+                  {{ req.status === 'CANCELLED' ? 'Cancellation Reason' : 'Rejection Reason' }}:
+                </span>
+                <p class="reason-content">"{{ req.rejectionReason || 'No reason provided.' }}"</p>
+              </div>
             </div>
             
           </div>

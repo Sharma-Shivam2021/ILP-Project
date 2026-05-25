@@ -22,9 +22,13 @@
         </button>
       </ng-container>
       <ng-template #guestActions>
-        <button mat-raised-button color="primary" (click)="enterPortal()">
+        <button mat-raised-button color="primary" (click)="enterPortal()" style="margin-right: 8px;">
           <mat-icon>login</mat-icon>
           Login
+        </button>
+        <button mat-stroked-button color="primary" (click)="goToRegister()">
+          <mat-icon>person_add</mat-icon>
+          Register
         </button>
       </ng-template>
     </div>
@@ -48,6 +52,10 @@
           <button mat-raised-button color="primary" class="cta-primary hover-lift" (click)="enterPortal()">
             <mat-icon>{{ user ? 'dashboard' : 'login' }}</mat-icon>
             {{ user ? 'Go to Dashboard' : 'Login' }}
+          </button>
+          <button mat-stroked-button color="primary" class="cta-primary hover-lift" *ngIf="!user" (click)="goToRegister()" style="border-width: 2px;">
+            <mat-icon>person_add</mat-icon>
+            Register
           </button>
           <a href="#features" mat-button class="cta-secondary">
             <mat-icon>explore</mat-icon>

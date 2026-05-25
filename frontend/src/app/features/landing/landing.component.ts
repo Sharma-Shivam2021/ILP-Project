@@ -44,6 +44,10 @@ export class LandingComponent {
     this.router.navigate([link]);
   }
 
+  goToRegister() {
+    this.router.navigate(['/register']);
+  }
+
   logout() {
     this.authService.logout();
   }

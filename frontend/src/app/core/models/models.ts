@@ -32,6 +32,7 @@ export interface LoginResponseDto {
   role: Role;
   userId: number;
   firstLogin: boolean;
+  fullName?: string;
 }
 
 export interface LoginRequestDto {
@@ -64,6 +65,7 @@ export interface ShiftRequestResponseDto {
   id: number;
   status: string;
   remarks: string;
+  rejectionReason?: string;
   createdAt: string;  // LocalDateTime
 
   // Requester info
@@ -133,6 +135,7 @@ export interface NurseResponseDto {
   contactEmail: string;
   departmentName: string;
   username: string;
+  allowShiftChange?: boolean;
 }
 
 export interface UpdateProfileDto {
@@ -149,6 +152,11 @@ export interface EligiblePeerDto {
   shiftStart: string;
   shiftEnd: string;
   shiftDate: string;
+  employeeCode?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  departmentName?: string;
+  nurseType?: string;
 }
 
 export interface CreateShiftRequestDto {
@@ -189,5 +197,78 @@ export interface CreateShiftDto {
   startTime: string; // "HH:mm:ss"
   endTime: string; // "HH:mm:ss"
 }
+
+export interface RegisterRequestDto {
+  username?: string;
+  password?: string;
+  fullName?: string;
+  email?: string;
+  contactPhone?: string;
+  role?: Role;
+  employeeCode?: string;
+  departmentId?: number;
+  nurseType?: string;
+}
+
+export interface AuditLog {
+  id: number;
+  action: string;
+  performedBy: string;
+  targetUser?: string;
+  details: string;
+  timestamp: string;
+}
+
+export interface AdminUserResponseDto {
+  userId: number;
+  username: string;
+  role: string;
+  profileId?: number;
+  employeeCode?: string;
+  fullName?: string;
+  email?: string;
+  contactPhone?: string;
+  departmentName?: string;
+  departmentId?: number;
+  isActive: boolean;
+  nurseType?: string;
+}
+
+export interface DepartmentResponse {
+  id: number;
+  name: string;
+  location: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface DailyAssignmentDto {
+  date: string;
+  dayOfWeek: string;
+  shiftName: string;
+  shiftTime?: string;
+}
+
+export interface NurseWeeklyReportDto {
+  nurseId: number;
+  fullName: string;
+  employeeCode: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  nurseType: string;
+  allowShiftChange: boolean;
+  totalShifts: number;
+  swapsApprovedCount: number;
+  swapsPendingCount: number;
+  dailyAssignments: DailyAssignmentDto[];
+}
+
+export interface WeeklyReportDto {
+  departmentName: string;
+  startDate: string;
+  endDate: string;
+  nurses: NurseWeeklyReportDto[];
+}
+
 
 

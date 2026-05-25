@@ -46,7 +46,7 @@ export class NurseDirectoryComponent implements OnInit {
   searchQuery = '';
   selectedType = 'ALL'; // 'ALL', 'PERMANENT', 'CONTRACTUAL'
 
-  displayedColumns: string[] = ['code', 'name', 'type', 'phone', 'email', 'status'];
+  displayedColumns: string[] = ['code', 'name', 'type', 'phone', 'email', 'permission'];
 
   ngOnInit() {
     this.resolveProfileAndLoad();
@@ -94,9 +94,12 @@ export class NurseDirectoryComponent implements OnInit {
       // 1. Filter by Search Query
       const query = this.searchQuery.trim().toLowerCase();
       const matchesSearch = !query || 
-        nurse.fullName.toLowerCase().includes(query) ||
-        nurse.employeeCode.toLowerCase().includes(query) ||
-        nurse.contactEmail.toLowerCase().includes(query);
+        (nurse.fullName && nurse.fullName.toLowerCase().includes(query)) ||
+        (nurse.employeeCode && nurse.employeeCode.toLowerCase().includes(query)) ||
+        (nurse.contactEmail && nurse.contactEmail.toLowerCase().includes(query)) ||
+        (nurse.contactPhone && nurse.contactPhone.toLowerCase().includes(query)) ||
+        (nurse.departmentName && nurse.departmentName.toLowerCase().includes(query)) ||
+        (nurse.nurseType && nurse.nurseType.toLowerCase().includes(query));
 
       // 2. Filter by Nurse Type
       const matchesType = this.selectedType === 'ALL' || 
@@ -108,6 +111,23 @@ export class NurseDirectoryComponent implements OnInit {
 
   onFilterChange() {
     this.applyFilters();
+  }
+
+  toggleAllowShiftChange(nurse: NurseResponseDto, allow: boolean) {
+    this.nurseService.toggleShiftChangePermission(nurse.id, allow).subscribe({
+      next: (updatedNurse) => {
+        nurse.allowShiftChange = updatedNurse.allowShiftChange;
+        const status = allow ? 'allowed' : 'restricted';
+        this.snackBar.open(`Nurse ${nurse.fullName} is now ${status} to coordinate shift swaps.`, 'Close', { duration: 3000 });
+      },
+      error: (err) => {
+        console.error(err);
+        const errMsg = err.error?.message || 'Failed to update shift coordination permission';
+        this.snackBar.open(errMsg, 'Close', { duration: 4000 });
+        // Revert UI flag in case of failure
+        nurse.allowShiftChange = !allow;
+      }
+    });
   }
 
   getInitials(name: string): string {

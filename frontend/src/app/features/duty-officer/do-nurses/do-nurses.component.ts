@@ -55,9 +55,12 @@ export class DoNursesComponent implements OnInit {
     const q = this.searchQuery.trim().toLowerCase();
     this.filteredNurses = this.allNurses.filter(n => {
       const matchSearch = !q ||
-        n.fullName.toLowerCase().includes(q) ||
-        n.employeeCode.toLowerCase().includes(q) ||
-        n.contactEmail?.toLowerCase().includes(q);
+        (n.fullName && n.fullName.toLowerCase().includes(q)) ||
+        (n.employeeCode && n.employeeCode.toLowerCase().includes(q)) ||
+        (n.contactEmail && n.contactEmail.toLowerCase().includes(q)) ||
+        (n.contactPhone && n.contactPhone.toLowerCase().includes(q)) ||
+        (n.departmentName && n.departmentName.toLowerCase().includes(q)) ||
+        (n.nurseType && n.nurseType.toLowerCase().includes(q));
       const matchType = this.selectedType === 'ALL' || n.nurseType?.toUpperCase() === this.selectedType;
       return matchSearch && matchType;
     });

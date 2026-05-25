@@ -1,0 +1,133 @@
+.audit-logs-wrapper {
+  padding: 24px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 4px 0;
+}
+
+.page-header p {
+  color: #4b5563;
+  margin: 0;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 16px;
+  border-radius: 10px;
+  background-color: white;
+  align-items: center;
+}
+
+.search-input {
+  flex: 2;
+  margin-bottom: -1.25em; /* Compensate Material field margin */
+}
+
+.action-select {
+  flex: 1;
+  margin-bottom: -1.25em;
+}
+
+.table-container {
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.logs-table {
+  width: 100%;
+}
+
+.logs-table th {
+  font-weight: 600;
+  color: #374151;
+  background-color: #f9fafb;
+}
+
+.action-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Colors for specific actions */
+.action-badge.USER_CREATION {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.action-badge.USER_DELETION {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.action-badge.USER_UPDATE {
+  background-color: #e0f2fe;
+  color: #075985;
+}
+
+.action-badge.PASSWORD_CHANGE,
+.action-badge.PASSWORD_RESET {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.action-badge.PERMISSION_CHANGE {
+  background-color: #f3e8ff;
+  color: #6b21a8;
+}
+
+.action-badge.SHIFT_APPROVAL {
+  background-color: #ecfdf5;
+  color: #065f46;
+}
+
+.action-badge.SHIFT_REJECTION {
+  background-color: #fff1f2;
+  color: #9f1239;
+}
+
+.action-badge.SHIFT_CANCELLATION {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  color: #6b7280;
+}
+
+.empty-state mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 768px) {
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

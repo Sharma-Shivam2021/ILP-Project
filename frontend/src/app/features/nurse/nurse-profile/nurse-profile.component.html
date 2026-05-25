@@ -26,8 +26,9 @@
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Phone</mat-label>
-          <input matInput formControlName="contactPhone" placeholder="Enter phone number">
+          <input matInput formControlName="contactPhone" placeholder="Enter phone number" maxlength="10" (input)="onPhoneInput($event)">
           <mat-error *ngIf="profileForm.get('contactPhone')?.hasError('required')">Phone is required</mat-error>
+          <mat-error *ngIf="profileForm.get('contactPhone')?.hasError('pattern')">Must be a valid 10-digit Indian mobile starting with 6-9</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">

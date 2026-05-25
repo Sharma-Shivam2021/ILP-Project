@@ -1,0 +1,225 @@
+<div class="weekly-report-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1>Weekly Shift & Swap Report</h1>
+      <p class="subtitle">Monitor weekly shift assignments, active swaps, and department workforce distribution.</p>
+    </div>
+    
+    <div class="actions">
+      <button mat-raised-button color="primary" (click)="exportPDF()" [disabled]="loading || downloading">
+        <mat-icon *ngIf="!downloading">download</mat-icon>
+        <mat-spinner diameter="20" *ngIf="downloading" class="button-spinner"></mat-spinner>
+        Export PDF Report
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <mat-progress-bar mode="indeterminate" *ngIf="loading" class="progress-bar"></mat-progress-bar>
+
+  <!-- Week Navigation Bar -->
+  <div class="navigation-bar glass-panel" *ngIf="!loading">
+    <button mat-icon-button (click)="previousWeek()" title="Previous Week">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <div class="date-range">
+      <mat-icon class="calendar-icon">calendar_month</mat-icon>
+      <span>{{ getWeekDisplayRange() }}</span>
+    </div>
+    <button mat-icon-button (click)="nextWeek()" title="Next Week">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+    <button mat-stroked-button class="current-week-btn" (click)="goToCurrentWeek()">
+      Current Week
+    </button>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="stats-grid" *ngIf="!loading && reportData">
+    <mat-card class="stat-card glass-panel">
+      <mat-card-content>
+        <div class="stat-icon-wrapper nurses">
+          <mat-icon>people</mat-icon>
+        </div>
+        <div class="stat-details">
+          <h3>Total Nurses</h3>
+          <p class="stat-value">{{ totalNursesCount }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card glass-panel">
+      <mat-card-content>
+        <div class="stat-icon-wrapper shifts">
+          <mat-icon>schedule</mat-icon>
+        </div>
+        <div class="stat-details">
+          <h3>Weekly Shifts</h3>
+          <p class="stat-value">{{ totalScheduledShifts }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card glass-panel">
+      <mat-card-content>
+        <div class="stat-icon-wrapper approved">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+        <div class="stat-details">
+          <h3>Approved Swaps</h3>
+          <p class="stat-value">{{ totalApprovedSwaps }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card glass-panel">
+      <mat-card-content>
+        <div class="stat-icon-wrapper pending">
+          <mat-icon>pending</mat-icon>
+        </div>
+        <div class="stat-details">
+          <h3>Pending Swaps</h3>
+          <p class="stat-value">{{ totalPendingSwaps }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Filters Row -->
+  <div class="filter-row glass-panel" *ngIf="!loading">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search Nurses</mat-label>
+      <input matInput [(ngModel)]="searchQuery" (ngModelChange)="onFilterChange()" placeholder="Name, employee code, phone, email...">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Nurse Type</mat-label>
+      <mat-select [(ngModel)]="selectedTypeFilter" (ngModelChange)="onFilterChange()">
+        <mat-option value="ALL">All Types</mat-option>
+        <mat-option value="PERMANENT">Permanent</mat-option>
+        <mat-option value="CONTRACTUAL">Contractual</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Weekly Schedule Grid -->
+  <div class="table-container glass-panel" *ngIf="!loading && reportData">
+    <table mat-table [dataSource]="filteredNurses" class="weekly-table">
+      
+      <!-- Nurse Info Column -->
+      <ng-container matColumnDef="nurseInfo">
+        <th mat-header-cell *matHeaderCellDef class="nurse-header"> Nurse (Code) </th>
+        <td mat-cell *matCellDef="let nurse" class="nurse-cell">
+          <div class="nurse-name-container">
+            <span class="nurse-name">{{ nurse.fullName }}</span>
+            <span class="nurse-meta">
+              <span class="nurse-code">{{ nurse.employeeCode }}</span>
+              <span class="type-dot" [ngClass]="nurse.nurseType"></span>
+              <span class="nurse-type">{{ nurse.nurseType | titlecase }}</span>
+            </span>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Monday Column -->
+      <ng-container matColumnDef="mon">
+        <th mat-header-cell *matHeaderCellDef class="day-header"> Mon </th>
+        <td mat-cell *matCellDef="let nurse">
+          <span class="shift-badge" [ngClass]="nurse.dailyAssignments[0].shiftName" [title]="nurse.dailyAssignments[0].shiftTime || 'Off-Duty'">
+            {{ getShiftLetter(nurse.dailyAssignments[0].shiftName) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Tuesday Column -->
+      <ng-container matColumnDef="tue">
+        <th mat-header-cell *matHeaderCellDef class="day-header"> Tue </th>
+        <td mat-cell *matCellDef="let nurse">
+          <span class="shift-badge" [ngClass]="nurse.dailyAssignments[1].shiftName" [title]="nurse.dailyAssignments[1].shiftTime || 'Off-Duty'">
+            {{ getShiftLetter(nurse.dailyAssignments[1].shiftName) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Wednesday Column -->
+      <ng-container matColumnDef="wed">
+        <th mat-header-cell *matHeaderCellDef class="day-header"> Wed </th>
+        <td mat-cell *matCellDef="let nurse">
+          <span class="shift-badge" [ngClass]="nurse.dailyAssignments[2].shiftName" [title]="nurse.dailyAssignments[2].shiftTime || 'Off-Duty'">
+            {{ getShiftLetter(nurse.dailyAssignments[2].shiftName) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Thursday Column -->
+      <ng-container matColumnDef="thu">
+        <th mat-header-cell *matHeaderCellDef class="day-header"> Thu </th>
+        <td mat-cell *matCellDef="let nurse">
+          <span class="shift-badge" [ngClass]="nurse.dailyAssignments[3].shiftName" [title]="nurse.dailyAssignments[3].shiftTime || 'Off-Duty'">
+            {{ getShiftLetter(nurse.dailyAssignments[3].shiftName) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Friday Column -->
+      <ng-container matColumnDef="fri">
+        <th mat-header-cell *matHeaderCellDef class="day-header"> Fri </th>
+        <td mat-cell *matCellDef="let nurse">
+          <span class="shift-badge" [ngClass]="nurse.dailyAssignments[4].shiftName" [title]="nurse.dailyAssignments[4].shiftTime || 'Off-Duty'">
+            {{ getShiftLetter(nurse.dailyAssignments[4].shiftName) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Saturday Column -->
+      <ng-container matColumnDef="sat">
+        <th mat-header-cell *matHeaderCellDef class="day-header"> Sat </th>
+        <td mat-cell *matCellDef="let nurse">
+          <span class="shift-badge" [ngClass]="nurse.dailyAssignments[5].shiftName" [title]="nurse.dailyAssignments[5].shiftTime || 'Off-Duty'">
+            {{ getShiftLetter(nurse.dailyAssignments[5].shiftName) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Sunday Column -->
+      <ng-container matColumnDef="sun">
+        <th mat-header-cell *matHeaderCellDef class="day-header"> Sun </th>
+        <td mat-cell *matCellDef="let nurse">
+          <span class="shift-badge" [ngClass]="nurse.dailyAssignments[6].shiftName" [title]="nurse.dailyAssignments[6].shiftTime || 'Off-Duty'">
+            {{ getShiftLetter(nurse.dailyAssignments[6].shiftName) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Total Scheduled Shifts -->
+      <ng-container matColumnDef="totalShifts">
+        <th mat-header-cell *matHeaderCellDef class="stat-header"> Shifts </th>
+        <td mat-cell *matCellDef="let nurse" class="stat-cell">
+          <b class="shift-count">{{ nurse.totalShifts }}</b>
+        </td>
+      </ng-container>
+
+      <!-- Swaps Stats Column -->
+      <ng-container matColumnDef="swaps">
+        <th mat-header-cell *matHeaderCellDef class="stat-header"> Swaps (Appr/Pend) </th>
+        <td mat-cell *matCellDef="let nurse" class="stat-cell">
+          <span class="swaps-metric">
+            <span class="approved-swaps" [class.active]="nurse.swapsApprovedCount > 0">{{ nurse.swapsApprovedCount }}</span>
+            <span class="separator">/</span>
+            <span class="pending-swaps" [class.active]="nurse.swapsPendingCount > 0">{{ nurse.swapsPendingCount }}</span>
+          </span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns" class="table-header-row"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-body-row"></tr>
+    </table>
+
+    <div class="empty-state" *ngIf="filteredNurses.length === 0">
+      <mat-icon>search_off</mat-icon>
+      <p>No matching nurses found in this department for this week.</p>
+    </div>
+  </div>
+</div>

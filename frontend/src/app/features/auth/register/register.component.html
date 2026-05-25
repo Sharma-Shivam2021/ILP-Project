@@ -1,0 +1,118 @@
+<div class="register-container">
+  <mat-card class="register-card glass-panel">
+    <mat-card-header>
+      <div mat-card-avatar class="header-image">
+        <mat-icon color="primary" style="font-size: 40px; width: 40px; height: 40px;">local_hospital</mat-icon>
+      </div>
+      <mat-card-title>Create an Account</mat-card-title>
+      <mat-card-subtitle>Hospital Workforce Shift Coordination System</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        
+        <!-- Role Selection -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Select Role</mat-label>
+          <mat-select formControlName="role">
+            <mat-option *ngFor="let role of roles" [value]="role.value">
+              {{ role.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="form-row">
+          <!-- Username -->
+          <mat-form-field appearance="outline" class="flex-field">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" type="text" placeholder="e.g. john_doe">
+            <mat-error *ngIf="registerForm.get('username')?.hasError('required')">Username is required</mat-error>
+            <mat-error *ngIf="registerForm.get('username')?.hasError('minlength')">Must be at least 3 characters</mat-error>
+          </mat-form-field>
+
+          <!-- Password -->
+          <mat-form-field appearance="outline" class="flex-field">
+            <mat-label>Password</mat-label>
+            <input matInput formControlName="password" type="password">
+            <mat-error *ngIf="registerForm.get('password')?.hasError('required')">Password is required</mat-error>
+            <mat-error *ngIf="registerForm.get('password')?.hasError('pattern')">
+              Must be 8+ chars with uppercase, lowercase, number & special char
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <!-- Full Name -->
+          <mat-form-field appearance="outline" class="flex-field">
+            <mat-label>Full Name</mat-label>
+            <input matInput formControlName="fullName" type="text" placeholder="e.g. John Doe">
+            <mat-error *ngIf="registerForm.get('fullName')?.hasError('required')">Full name is required</mat-error>
+          </mat-form-field>
+
+          <!-- Employee Code -->
+          <mat-form-field appearance="outline" class="flex-field">
+            <mat-label>Employee Code</mat-label>
+            <input matInput formControlName="employeeCode" type="text" placeholder="e.g. NU001">
+            <mat-error *ngIf="registerForm.get('employeeCode')?.hasError('required')">Employee code is required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <!-- Email -->
+          <mat-form-field appearance="outline" class="flex-field">
+            <mat-label>Email Address</mat-label>
+            <input matInput formControlName="email" type="email" placeholder="e.g. john@hospital.com">
+            <mat-error *ngIf="registerForm.get('email')?.hasError('required')">Email is required</mat-error>
+            <mat-error *ngIf="registerForm.get('email')?.hasError('email')">Invalid email format</mat-error>
+          </mat-form-field>
+
+          <!-- Contact Phone -->
+          <mat-form-field appearance="outline" class="flex-field">
+            <mat-label>Indian Mobile Number</mat-label>
+            <input matInput formControlName="contactPhone" type="text" placeholder="10-digit number e.g. 9876543210" maxlength="10" (input)="onPhoneInput($event)">
+            <mat-error *ngIf="registerForm.get('contactPhone')?.hasError('required')">Mobile number is required</mat-error>
+            <mat-error *ngIf="registerForm.get('contactPhone')?.hasError('pattern')">
+              Enter a valid 10-digit Indian number starting with 6-9
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Conditional Fields -->
+        <div class="form-row" *ngIf="registerForm.get('role')?.value !== 'ADMIN'">
+          <!-- Department -->
+          <mat-form-field appearance="outline" class="flex-field">
+            <mat-label>Department</mat-label>
+            <mat-select formControlName="departmentId">
+              <mat-option *ngFor="let dept of departments" [value]="dept.id">
+                {{ dept.name }} ({{ dept.location }})
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="registerForm.get('departmentId')?.hasError('required')">Department is required</mat-error>
+          </mat-form-field>
+
+          <!-- Nurse Type (only for NURSE) -->
+          <mat-form-field appearance="outline" class="flex-field" *ngIf="registerForm.get('role')?.value === 'NURSE'">
+            <mat-label>Nurse Type</mat-label>
+            <mat-select formControlName="nurseType">
+              <mat-option *ngFor="let type of nurseTypes" [value]="type.value">
+                {{ type.label }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="registerForm.get('nurseType')?.hasError('required')">Nurse type is required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading || registerForm.invalid" class="register-button">
+            {{ loading ? 'Creating Account...' : 'Register' }}
+          </button>
+        </div>
+      </form>
+
+      <div class="login-link-container">
+        <span style="font-size: 13px; color: rgba(0,0,0,0.6);">Already have an account? </span>
+        <a routerLink="/login" style="font-size: 13px; font-weight: 500; color: #3f51b5; text-decoration: none;">Login here</a>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

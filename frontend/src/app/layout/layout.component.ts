@@ -43,6 +43,7 @@ export class LayoutComponent {
       case 'NURSE': return '/nurse';
       case 'NURSING_INCHARGE': return '/incharge';
       case 'DUTY_OFFICER': return '/duty-officer';
+      case 'ADMIN': return '/admin';
       default: return '/';
     }
   }
